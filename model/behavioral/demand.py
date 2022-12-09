@@ -3,8 +3,8 @@ from ..types import StateType, ParamsType
 
 
 def market_demand_behavioral(state: StateType, params: ParamsType):
-    net_flow = random.uniform(state["treasury"] * state["total_supply"],
-                              state["treasury"] * state["total_demand"])
+    net_flow = random.uniform(state["treasury"] * state["market_demand_supply"].total_supply,
+                              state["treasury"] * state["market_demand_supply"].total_demand)
     market_demand = params["demand_factor"] * random.uniform(0.5, 3)
     market_supply = params["supply_factor"] * random.uniform(0.5, 3)
 
