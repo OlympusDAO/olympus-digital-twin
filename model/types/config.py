@@ -4,6 +4,7 @@ from .compound import MarketDemandSupply
 
 StateType = TypedDict('StateType', {
                       'treasury': USD,
-                      'market_demand_supply': MarketDemandSupply})
+                      'market_demand_supply': MarketDemandSupply,
+                      "net_flow": PlaceholderTypeDemandSupply})
 ParamsType = TypedDict('ParamsType', {
                        'demand_factor': PlaceholderTypeDemandSupply, 'supply_factor': PlaceholderTypeDemandSupply})
