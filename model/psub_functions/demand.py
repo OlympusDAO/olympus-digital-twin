@@ -1,4 +1,5 @@
 from ..behavioral.demand import market_demand_behavioral
+from ..mechanism.demand import update_market_demand
 
 
 def p_demand(_params, substep, state_history, state) -> dict:
@@ -6,9 +7,7 @@ def p_demand(_params, substep, state_history, state) -> dict:
     return output
 
 
-def s_update_miners(_params, substep, state_history, state, _input) -> dict:
+def s_demand(_params, substep, state_history, state, _input) -> dict:
+    out = update_market_demand(state, _params, _input)
 
-    return ("miners", _input["miners"])
-
-
-# Get a mechanism that is going to return a new version of demand supply
+    return ("market_demand_supply", out)
