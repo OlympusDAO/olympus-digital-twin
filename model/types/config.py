@@ -7,6 +7,7 @@ StateType = TypedDict('StateType', {
                       'liq_stables':USD,
                       'reserves_stables':USD,
                       'treasury_stables':USD,
+                      'liq_backing':USD,
                     #   'price':USD/OHM,
                     #   'ma_target':USD/OHM,
                       'reserves_in':USD,

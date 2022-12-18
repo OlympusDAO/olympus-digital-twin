@@ -2,10 +2,10 @@ from .psub_functions.demand import p_demand, s_demand, s_netflow
 from .psub_functions.reward_rate import p_reward_rate, s_reward_rate
 from .psub_functions.amm_k import s_amm_k
 from .mechanism.supply import s_supply
-from .mechanism.treasury import s_treasury_stables,s_reserves_in
+from .mechanism.treasury import s_treasury_stables,s_liq_backing,s_reserves_in
 from .policy.treasury import p_reserves_in
-from .mechanism.rbs_price import s_ma_target,s_price_history
-
+from .mechanism.rbs_price import s_ma_target,s_lb_target,s_price_history,s_price_target,s_lower_target_wall,s_upper_target_wall
+from .policy.rbs_price import p_price_target
 
 # OVERALL TODO: check if all the order are right
 
@@ -20,6 +20,13 @@ psub_blocks = [
         }
     },
 
+    { # Warning: this part is actually "treasury_stables from yesterday" 
+        "policies":{},
+        "variables":{
+            "liq_backing":s_liq_backing
+        }
+    },
+
     # update_price_history
     {
         "policies":{},
@@ -27,6 +34,33 @@ psub_blocks = [
             "price_history":s_price_history
         }
     },
+    # ------------------RBS PRICE (based on what happened yesterday)--------------------
+    #update two price targets
+    {
+        'policies':{},
+        'variables':{
+            'ma_target':s_ma_target,
+            'lb_target':s_lb_target,
+        }
+    },
+    #update actual price target today
+    {
+        'policies':{
+            'price_target':p_price_target
+            },
+        'variables':{
+            'price_target':s_price_target,
+        }
+    },
+    # now update the walls around the target
+    {
+        'policies':{},
+        'variables':{
+            'lower_target_wall':s_lower_target_wall,
+            'upper_target_wall':s_upper_target_wall
+        }
+    },
+
 
     # update supply expansion based on the activities happened from yesterday, plus providing rewards
     # update_supply
@@ -57,15 +91,7 @@ psub_blocks = [
     },
 
 
-    # ------------------RBS PRICE--------------------
-    #update_ma_target 
-    {
-        'policies':{},
-        'variables':{
-            'ma_target':s_ma_target
-        }
-        
-    }
+    
     # -----------------------------------------------------
 ]
 demand_update_block = {
