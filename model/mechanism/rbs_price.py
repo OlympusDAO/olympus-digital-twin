@@ -34,6 +34,8 @@ def s_ma_target(params, substep, state_history, state, _input) -> tuple:
 def s_lb_target(params, substep, state_history, state, _input) -> tuple:
     if state['floating_supply']:
         lb_target = state['liq_backing'] / state['floating_supply']
+        lb_target = min(lb_target, state["supply"])
+        lb_target = max(lb_target, 0)
     else:
         lb_target=0
     return ("lb_target",lb_target)
