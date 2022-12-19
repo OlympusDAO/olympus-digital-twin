@@ -19,7 +19,6 @@ def s_ma_target(params, substep, state_history, state, _input) -> tuple:
     price_history = state['price_history']
 
     if days > days_ma:
-        
         ma_target=np.mean(price_history[-days_ma:])
 
     elif days ==0:
@@ -33,9 +32,8 @@ def s_ma_target(params, substep, state_history, state, _input) -> tuple:
 
 # liquidity backing target
 def s_lb_target(params, substep, state_history, state, _input) -> tuple:
-    
-    if state['supply']:
-        lb_target = state['liq_backing'] / state['supply']
+    if state['floating_supply']:
+        lb_target = state['liq_backing'] / state['floating_supply']
     else:
         lb_target=0
     return ("lb_target",lb_target)

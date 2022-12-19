@@ -5,9 +5,13 @@ from .compound import MarketDemandSupply
 StateType = TypedDict('StateType', {
                       'reward_rate':float,
                       'liq_stables':USD,
+                      'liq_ohm':OHM, # same like liq_stables, but in the unit of ohm 
                       'reserves_stables':USD,
                       'treasury_stables':USD,
                       'liq_backing':USD,
+                      
+                      'supply':OHM,
+                      'floating_supply':OHM,
                     #   'price':USD/OHM,
                     #   'ma_target':USD/OHM,
                       'reserves_in':USD,
