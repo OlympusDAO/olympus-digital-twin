@@ -22,4 +22,5 @@ StateType = TypedDict('StateType', {
                       "net_flow": USD})
 ParamsType = TypedDict('ParamsType', {
                         'target_ma':day,
-                        'demand_factor': PlaceholderTypeDemandSupply, 'supply_factor': PlaceholderTypeDemandSupply})
+                        'demand_factor': PlaceholderTypeDemandSupply, 'supply_factor': PlaceholderTypeDemandSupply,
+                        "reinstate_window": int})
