@@ -40,12 +40,9 @@ def s_price_target(params, substep, state_history, state, _input) -> tuple:
     return ('price_target',_input['price_target'])
 
 # walls
-def lower_target_wall_mechanism(price_target,lower_wall_factor):
-    return price_target*(1-lower_wall_factor)
-def upper_target_wall_mechanism(price_target,upper_wall_factor):
-    return price_target*(1+upper_wall_factor)
+def s_target_walls(params, substep, state_history, state, _input) -> tuple:
+    return ('target_walls',[_input['lower_target_wall'],_input['upper_target_wall']])
 
-def s_lower_target_wall(params, substep, state_history, state, _input) -> tuple:
-    return ('lower_target_wall',lower_target_wall_mechanism(state['price_target'] , params['lower_wall']))
-def s_upper_target_wall(params, substep, state_history, state, _input) -> tuple:
-    return ('upper_target_wall',upper_target_wall_mechanism(state['price_target'], params['upper_wall']))
+# cushions
+def s_target_cushions(params, substep, state_history, state, _input) -> tuple:
+    return ('target_cushions',[_input['lower_target_cushion'],_input['upper_target_cushion']])
