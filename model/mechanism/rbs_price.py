@@ -6,6 +6,11 @@ def s_price_history(params, substep, state_history, state, _input) -> tuple:
         new_history=[state['price']]
     return ("price_history",new_history)
 
+def s_bid_counter(params, substep, state_history, state, _input) -> tuple:
+    return ('bid_counter',_input['bid_counter'])
+def s_ask_counter(params, substep, state_history, state, _input) -> tuple:
+    return ('ask_counter',_input['ask_counter'])
+
 # moving average target
 def s_ma_target(params, substep, state_history, state, _input) -> tuple:
 

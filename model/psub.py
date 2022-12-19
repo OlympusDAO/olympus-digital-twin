@@ -4,8 +4,8 @@ from .psub_functions.amm_k import s_amm_k
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables,s_liq_backing,s_reserves_in
 from .policy.treasury import p_reserves_in
-from .mechanism.rbs_price import s_ma_target,s_lb_target,s_price_history,s_price_target,s_target_walls,s_target_cushions
-from .policy.rbs_price import p_price_target,p_target_walls,p_target_cushions
+from .mechanism.rbs_price import s_ma_target,s_lb_target,s_price_history,s_price_target,s_target_walls,s_target_cushions,s_bid_counter,s_ask_counter
+from .policy.rbs_price import p_price_target,p_target_walls,p_target_cushions,p_bid_counter,p_ask_counter
 
 # OVERALL TODO: check if all the order are right
 
@@ -35,6 +35,26 @@ psub_blocks = [
         }
     },
     # ------------------RBS PRICE (based on what happened yesterday)--------------------
+    # update bid_counter based on the price from yesterday
+    {
+        'policies':{
+            'bid_counter':p_bid_counter
+        },
+        'variables':{
+            'bid_counter':s_bid_counter
+        }
+
+    },
+    # update ask_counter based on the price from yesterday
+    {
+        'policies':{
+            'bid_counter':p_ask_counter
+        },
+        'variables':{
+            'bid_counter':s_ask_counter
+        }
+
+    },
     #update two price targets
     {
         'policies':{},
