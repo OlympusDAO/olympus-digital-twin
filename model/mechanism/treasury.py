@@ -17,7 +17,7 @@ def s_floating_supply(params,substep, state_history, state,_input) -> tuple:
 def liq_backing_mechanism(stables,volatiles)->USD:
     return stables + volatiles
 def s_liq_backing(params,substep, state_history, state,_input) -> tuple:
-    return ("liq_backing",liq_backing_mechanism(state['treasury_stables'] ,params['initial_reserves_volatile']))
+    return ("liq_backing",liq_backing_mechanism(state['treasury_stables'] ,state['reserves_volatile']))
     
 def s_reserves_in(params, substep, state_history, state,_input) -> tuple:
     return ("reserves_in",_input['reserves_in'])
