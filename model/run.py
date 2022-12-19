@@ -50,3 +50,8 @@ def run(exp) -> pd.DataFrame:
     raw_system_events, _, _ = sim.execute()
     df = pd.DataFrame(raw_system_events)
     return df
+
+def post_processing(raw) -> pd.DataFrame:
+    # Pull only the final substep
+    df = raw.groupby(["simulation", "subset", "run", "timestep"]).last().reset_index()
+    return df
