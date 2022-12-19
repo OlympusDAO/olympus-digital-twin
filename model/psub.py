@@ -48,10 +48,10 @@ psub_blocks = [
     # update ask_counter based on the price from yesterday
     {
         'policies':{
-            'bid_counter':p_ask_counter
+            'ask_counter':p_ask_counter
         },
         'variables':{
-            'bid_counter':s_ask_counter
+            'ask_counter':s_ask_counter
         }
 
     },
