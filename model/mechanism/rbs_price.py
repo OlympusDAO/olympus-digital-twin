@@ -21,9 +21,9 @@ def s_ask_counter(params, substep, state_history, state, _input) -> tuple:
 
 def s_ma_target(params, substep, state_history, state, _input) -> tuple:
 
-    # TODO: check if this is the right way to get history
     days = state['timestep']-1
     days_ma = params["target_ma"]
+
     price_history = state['price_history']
 
     if days > days_ma:

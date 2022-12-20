@@ -167,4 +167,6 @@ psub_blocks = [reward_rate_block,
                ]
 
 # Temp testing overwrite
-psub_blocks = [reward_rate_block, supply_block]
+psub_blocks = [reward_rate_block, supply_block, reserves_in_block, amm_k_block,
+               price_target_block1, price_target_block2,
+               price_history_block]
