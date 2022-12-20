@@ -47,25 +47,18 @@ price_history_block = {
     }
 }
 
-bid_counter_block = {
+reinstate_counter_block = {
     'policies': {
-        'bid_counter': p_bid_counter
-    },
-    'variables': {
-        'bid_counter': s_bid_counter
-    }
-
-}
-
-ask_counter_block = {
-    'policies': {
+        'bid_counter': p_bid_counter,
         'ask_counter': p_ask_counter
     },
     'variables': {
+        'bid_counter': s_bid_counter,
         'ask_counter': s_ask_counter
     }
 
 }
+
 
 price_target_block1 = {
     'policies': {},
@@ -140,9 +133,9 @@ psub_blocks = [reward_rate_block,
                price_history_block,
                # ------------------RBS PRICE (based on what happened yesterday)--------------------
                # update bid_counter based on the price from yesterday
-               bid_counter_block,
+               # bid_counter_block,
                # update ask_counter based on the price from yesterday
-               ask_counter_block,
+               # ask_counter_block,
                # update two price targets
                price_target_block1,
                # update actual price target today
@@ -168,5 +161,6 @@ psub_blocks = [reward_rate_block,
 
 # Temp testing overwrite
 psub_blocks = [reward_rate_block, supply_block, reserves_in_block, amm_k_block,
-               price_target_block1, price_target_block2,
+               price_target_block1, price_target_block2, target_walls_block, cushions_block,
+               reinstate_counter_block,
                price_history_block]
