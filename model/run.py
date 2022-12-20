@@ -51,7 +51,14 @@ def run(exp) -> pd.DataFrame:
     df = pd.DataFrame(raw_system_events)
     return df
 
+
 def post_processing(raw) -> pd.DataFrame:
     # Pull only the final substep
-    df = raw.groupby(["simulation", "subset", "run", "timestep"]).last().reset_index()
+    df = raw.groupby(["simulation", "subset", "run",
+                     "timestep"]).last().reset_index()
+
+    # Counter values
+    df["control_ask"] = df["ask_counter"].apply(lambda x: sum(x))
+    df["control_bid"] = df["bid_counter"].apply(lambda x: sum(x))
+
     return df
