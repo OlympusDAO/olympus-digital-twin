@@ -4,10 +4,10 @@ from .psub_functions.amm_k import s_amm_k
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
 from .policy.treasury import p_reserves_in
-from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_price_target, s_upper_target_wall, s_lower_target_wall, s_target_cushions, s_bid_counter, s_ask_counter
+from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_price_target, s_upper_target_wall, s_lower_target_wall, s_lower_target_cushion, s_upper_target_cushion, s_bid_counter, s_ask_counter
 from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
 from .psub_functions.target_capacity import p_target_capacity, s_bid_capacity_target, s_ask_capacity_target, s_bid_capacity_target_cushion, s_ask_capacity_target_cushion, s_natural_price
-from .psub_functions.real_capacity_cushion_block import p_real_bid_capacity_cushion, p_real_ask_capacity_cushion, s_bid_capacity_cushion, s_ask_capacity_cushion
+from .psub_functions.treasury_market_operations import p_real_bid_capacity_cushion, p_real_ask_capacity_cushion, s_bid_capacity_cushion, s_ask_capacity_cushion
 
 
 # OVERALL TODO: check if all the order are right
@@ -95,9 +95,11 @@ cushions_block = {
         'target_cushions': p_target_cushions
     },
     'variables': {
-        'target_cushions': s_target_cushions
+        'lower_target_cushion': s_lower_target_cushion,
+        'upper_target_cushion': s_upper_target_cushion
     }
 }
+
 
 supply_block = {
     'policies': {
