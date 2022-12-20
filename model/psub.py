@@ -165,3 +165,6 @@ psub_blocks = [reward_rate_block,
 
                # -----------------------------------------------------
                ]
+
+# Temp testing overwrite
+psub_blocks = [reward_rate_block, supply_block]
