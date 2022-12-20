@@ -21,9 +21,9 @@ def s_ask_counter(params, substep, state_history, state, _input) -> tuple:
 
 def s_ma_target(params, substep, state_history, state, _input) -> tuple:
 
-    # TODO: check if this is the right way to get history
     days = state['timestep']-1
     days_ma = params["target_ma"]
+
     price_history = state['price_history']
 
     if days > days_ma:
@@ -57,11 +57,26 @@ def s_price_target(params, substep, state_history, state, _input) -> tuple:
 # walls
 
 
-def s_target_walls(params, substep, state_history, state, _input) -> tuple:
-    return ('target_walls', [_input['lower_target_wall'], _input['upper_target_wall']])
+def s_upper_target_wall(params, substep, state_history, state, _input) -> tuple:
+    return ("upper_target_wall", _input['upper_target_wall'])
+
+
+def s_lower_target_wall(params, substep, state_history, state, _input) -> tuple:
+    return ("lower_target_wall", _input['lower_target_wall'])
 
 # cushions
 
 
-def s_target_cushions(params, substep, state_history, state, _input) -> tuple:
-    return ('target_cushions', [_input['lower_target_cushion'], _input['upper_target_cushion']])
+def s_lower_target_cushion(params, substep, state_history, state, _input) -> tuple:
+    assert _input['lower_target_cushion'] > 0
+    assert _input['lower_target_cushion'] < _input['upper_target_cushion']
+
+    return ("lower_target_cushion", _input['lower_target_cushion'])
+
+
+def s_upper_target_cushion(params, substep, state_history, state, _input) -> tuple:
+
+    assert _input['upper_target_cushion'] > 0
+    assert _input['lower_target_cushion'] < _input['upper_target_cushion']
+
+    return ("upper_target_cushion", _input['upper_target_cushion'])
