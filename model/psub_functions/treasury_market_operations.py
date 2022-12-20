@@ -45,3 +45,29 @@ def s_bid_capacity_cushion(_params, substep, state_history, state, _input) -> tu
 
 def s_ask_capacity_cushion(_params, substep, state_history, state, _input) -> tuple:
     return ("ask_capacity_cushion", _input["ask_capacity_cushion"])
+
+
+def p_effective_bid_capacity_cushion(_params, substep, state_history, state) -> dict:
+    return {"bid_change_cushion_usd": state["bid_change_cushion_usd"],
+            "bid_change_cushion_ohm": state["bid_change_cushion_ohm"]}
+
+
+def p_effective_ask_capacity_cushion(_params, substep, state_history, state) -> dict:
+    return {"ask_change_cushion_usd": state["ask_change_cushion_usd"],
+            "ask_change_cushion_ohm": state["ask_change_cushion_ohm"]}
+
+
+def s_bid_change_cushion_usd(_params, substep, state_history, state, _input) -> tuple:
+    return ("bid_change_cushion_usd", _input["bid_change_cushion_usd"])
+
+
+def s_bid_change_cushion_ohm(_params, substep, state_history, state, _input) -> tuple:
+    return ("bid_change_cushion_ohm", _input["bid_change_cushion_ohm"])
+
+
+def s_ask_change_cushion_usd(_params, substep, state_history, state, _input) -> tuple:
+    return ("ask_change_cushion_usd", _input["ask_change_cushion_usd"])
+
+
+def s_ask_change_cushion_ohm(_params, substep, state_history, state, _input) -> tuple:
+    return ("ask_change_cushion_ohm", _input["ask_change_cushion_ohm"])
