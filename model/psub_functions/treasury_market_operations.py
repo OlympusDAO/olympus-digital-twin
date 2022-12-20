@@ -34,7 +34,7 @@ def p_real_ask_capacity_cushion(_params, substep, state_history, state) -> dict:
             elif self.ask_capacity_cushion > self.ask_capacity_target_cushion:
                 self.ask_capacity_cushion = self.ask_capacity_target_cushion
     """
-    return state["ask_capacity_cushion"]
+    return {"ask_capacity_cushion": state["ask_capacity_cushion"]}
 
 
 def s_bid_capacity_cushion(_params, substep, state_history, state, _input) -> tuple:
