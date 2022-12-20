@@ -57,8 +57,12 @@ def s_price_target(params, substep, state_history, state, _input) -> tuple:
 # walls
 
 
-def s_target_walls(params, substep, state_history, state, _input) -> tuple:
-    return ('target_walls', [_input['lower_target_wall'], _input['upper_target_wall']])
+def s_upper_target_wall(params, substep, state_history, state, _input) -> tuple:
+    return ("upper_target_wall", _input['upper_target_wall'])
+
+
+def s_lower_target_wall(params, substep, state_history, state, _input) -> tuple:
+    return ("lower_target_wall", _input['lower_target_wall'])
 
 # cushions
 

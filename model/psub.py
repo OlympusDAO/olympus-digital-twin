@@ -4,8 +4,9 @@ from .psub_functions.amm_k import s_amm_k
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
 from .policy.treasury import p_reserves_in
-from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_price_target, s_target_walls, s_target_cushions, s_bid_counter, s_ask_counter
+from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_price_target, s_upper_target_wall, s_lower_target_wall, s_target_cushions, s_bid_counter, s_ask_counter
 from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
+from .psub_functions.target_capacity import p_target_capacity, s_bid_capacity_target, s_ask_capacity_target, s_bid_capacity_target_cushion, s_ask_capacity_target_cushion, s_natural_price
 
 # OVERALL TODO: check if all the order are right
 
@@ -82,7 +83,8 @@ target_walls_block = {
         'target_walls': p_target_walls
     },
     'variables': {
-        'target_walls': s_target_walls
+        'upper_target_wall': s_upper_target_wall,
+        "lower_target_wall": s_lower_target_wall
     }
 }
 
@@ -121,46 +123,20 @@ amm_k_block = {
     }
 }
 
-psub_blocks = [reward_rate_block,
-               demand_block,
-               # update variables that depend on other variables
-
-               # update_treasury_stables
-               treasury_stables_block,
-               liq_backing_block,
-
-               # update_price_history
-               price_history_block,
-               # ------------------RBS PRICE (based on what happened yesterday)--------------------
-               # update bid_counter based on the price from yesterday
-               # bid_counter_block,
-               # update ask_counter based on the price from yesterday
-               # ask_counter_block,
-               # update two price targets
-               price_target_block1,
-               # update actual price target today
-               price_target_block2,
-               # update the walls around the target
-               target_walls_block,
-               # update the cushions around the target
-               cushions_block,
-
-               # update supply expansion based on the activities happened from yesterday, plus providing rewards
-               # update_supply
-               supply_block,
-               # update_reserves_in
-               reserves_in_block,
-
-               # update_AMM_k_block
-               amm_k_block,
+target_capacities_block = {
+    'policies': {
+        "target_capacity": p_target_capacity
+    },
+    'variables': {
+        "bid_capacity_target": s_bid_capacity_target,
+        "ask_capacity_target": s_ask_capacity_target,
+        "bid_capacity_target_cushion": s_bid_capacity_target_cushion,
+        "ask_capacity_target_cushion": s_ask_capacity_target_cushion,
+        "natural_price": s_natural_price, }
+}
 
 
-
-               # -----------------------------------------------------
-               ]
-
-# Temp testing overwrite
-psub_blocks = [reward_rate_block, supply_block, reserves_in_block, amm_k_block,
+psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block, supply_block, reserves_in_block, amm_k_block,
                price_target_block1, price_target_block2, target_walls_block, cushions_block,
-               reinstate_counter_block,
+               reinstate_counter_block, demand_block, target_capacities_block,
                price_history_block]
