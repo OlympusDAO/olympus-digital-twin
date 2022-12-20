@@ -54,3 +54,20 @@ def effective_bid_capacity_cushion_policy(natural_price, lower_target_cushion, l
             lower_target_cushion or 0
 
     return bid_change_cushion_usd, bid_change_cushion_ohm
+
+
+def effective_ask_capacity_cushion_policy(natural_price, upper_target_cushion, upper_target_wall, ask_capacity_cushion_prior, ask_capacity_cushion):
+    if natural_price > upper_target_cushion and natural_price <= upper_target_wall:
+        ask_change_cushion_ohm = ask_capacity_cushion_prior - ask_capacity_cushion
+        ask_change_cushion_usd = upper_target_cushion * \
+            (ask_capacity_cushion_prior - ask_capacity_cushion)
+    else:
+        ask_change_cushion_ohm = 0
+        ask_change_cushion_usd = 0
+
+    # ensure that change is smaller than capacity left
+    if ask_change_cushion_ohm > ask_capacity_cushion_prior:
+        ask_change_cushion_ohm = ask_capacity_cushion_prior
+        ask_change_cushion_usd = ask_capacity_cushion_prior * upper_target_cushion
+
+    return ask_change_cushion_usd, ask_change_cushion_ohm
