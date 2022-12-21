@@ -1,4 +1,6 @@
-from ..policy.treasury_market_operations import real_bid_capacity_cushion_policy, real_ask_capacity_cushion_policy, effective_bid_capacity_cushion_policy, effective_ask_capacity_cushion_policy
+from ..policy.treasury_market_operations import (real_bid_capacity_cushion_policy, real_ask_capacity_cushion_policy,
+                                                 effective_bid_capacity_cushion_policy, effective_ask_capacity_cushion_policy,
+                                                 real_bid_capacity_totals_policy)
 
 
 def p_real_bid_capacity_cushion(_params, substep, state_history, state) -> dict:
@@ -93,8 +95,31 @@ def s_ask_change_cushion_ohm(_params, substep, state_history, state, _input) -> 
 
 
 def p_real_bid_capacity_totals(_params, substep, state_history, state) -> dict:
-    return {"bid_capacity_cushion": state["bid_capacity_cushion"],
-            "bid_capacity": state["bid_capacity"]}
+    prev_day = state_history[-1][-1]
+    bid_capacity_cushion = state["bid_capacity_cushion"]
+    bid_counter = state["bid_counter"]
+    min_counter_reinstate_param = _params["min_counter_reinstate"]
+    with_reinstate_window_param = _params["with_reinstate_window"]
+    natural_price = state["natural_price"]
+    lower_target_cushion = state["lower_target_cushion"]
+    lower_target_wall = state["lower_target_wall"]
+    net_flow = state["net_flow"]
+    reserves_in = state["reserves_in"]
+    liq_stables_prior = prev_day["liq_stables"]
+    amm_k = state["amm_k"]
+    target = state["price_target"]
+    lb_target = state["lb_target"]
+    lower_wall_param = _params["lower_wall"]
+    bid_capacity_target = state["bid_capacity_target"]
+    bid_capacity_prior = prev_day["bid_capacity"]
+    bid_change_cushion_usd = state["bid_change_cushion_usd"]
+
+    bid_capacity_cushion, bid_capacity = real_bid_capacity_totals_policy(target, lb_target, natural_price, lower_wall_param, bid_capacity_target,
+                                                                         bid_counter, min_counter_reinstate_param, with_reinstate_window_param, lower_target_cushion,
+                                                                         lower_target_wall, bid_capacity_prior, net_flow, reserves_in, liq_stables_prior, amm_k,
+                                                                         bid_change_cushion_usd, bid_capacity_cushion)
+    return {"bid_capacity_cushion": bid_capacity_cushion,
+            "bid_capacity": bid_capacity}
 
 
 def p_real_ask_capacity_totals(_params, substep, state_history, state) -> dict:
