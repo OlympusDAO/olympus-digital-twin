@@ -9,7 +9,9 @@ from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions,
 from .psub_functions.target_capacity import p_target_capacity, s_bid_capacity_target, s_ask_capacity_target, s_bid_capacity_target_cushion, s_ask_capacity_target_cushion, s_natural_price
 from .psub_functions.treasury_market_operations import (p_real_bid_capacity_cushion, p_real_ask_capacity_cushion, s_bid_capacity_cushion, s_ask_capacity_cushion,
                                                         p_effective_bid_capacity_cushion, p_effective_ask_capacity_cushion, s_bid_change_cushion_usd, s_bid_change_cushion_ohm, s_ask_change_cushion_usd, s_ask_change_cushion_ohm,
-                                                        p_real_bid_capacity_totals, p_real_ask_capacity_totals, s_bid_capacity, s_ask_capacity)
+                                                        p_real_bid_capacity_totals, p_real_ask_capacity_totals, s_bid_capacity, s_ask_capacity,
+                                                        p_effective_bid_capacity_changes_totals, p_effective_ask_capacity_changes_totals, s_bid_change_ohm, s_bid_change_usd, s_ask_change_ohm, s_ask_change_usd
+                                                        )
 
 reward_rate_block = {'policies': {
     'reward_rate': p_reward_rate
@@ -166,6 +168,16 @@ real_capacity_totals_block = {'policies': {
         "bid_capacity": s_bid_capacity,
         "ask_capacity_cushion": s_ask_capacity_cushion,
         "ask_capacity": s_ask_capacity, }}
+
+effective_capacity_changes_totals_block = {'policies': {
+    "effective_bid_capacity_changes_totals": p_effective_bid_capacity_changes_totals,
+    "effective_ask_capacity_changes_totals": p_effective_ask_capacity_changes_totals
+},
+    'variables': {
+        "bid_change_ohm": s_bid_change_ohm,
+        "bid_change_usd": s_bid_change_usd,
+        "ask_change_ohm": s_ask_change_ohm,
+        "ask_change_usd": s_ask_change_usd, }}
 
 
 psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block, supply_block, reserves_in_block, amm_k_block,

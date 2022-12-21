@@ -1,6 +1,6 @@
 from ..policy.treasury_market_operations import (real_bid_capacity_cushion_policy, real_ask_capacity_cushion_policy,
                                                  effective_bid_capacity_cushion_policy, effective_ask_capacity_cushion_policy,
-                                                 real_bid_capacity_totals_policy, real_ask_capacity_totals_policy)
+                                                 real_bid_capacity_totals_policy, real_ask_capacity_totals_policy,)
 
 
 def p_real_bid_capacity_cushion(_params, substep, state_history, state) -> dict:
@@ -152,3 +152,29 @@ def s_bid_capacity(_params, substep, state_history, state, _input) -> tuple:
 
 def s_ask_capacity(_params, substep, state_history, state, _input) -> tuple:
     return ("ask_capacity", _input["ask_capacity"])
+
+
+def p_effective_bid_capacity_changes_totals(_params, substep, state_history, state) -> dict:
+    return {"bid_change_ohm": state["bid_change_ohm"],
+            "bid_change_usd": state["bid_change_usd"]}
+
+
+def p_effective_ask_capacity_changes_totals(_params, substep, state_history, state) -> dict:
+    return {"ask_change_ohm": state["ask_change_ohm"],
+            "ask_change_usd": state["ask_change_usd"]}
+
+
+def s_bid_change_ohm(_params, substep, state_history, state, _input) -> tuple:
+    return ("bid_change_ohm", _input["bid_change_ohm"])
+
+
+def s_bid_change_usd(_params, substep, state_history, state, _input) -> tuple:
+    return ("bid_change_usd", _input["bid_change_usd"])
+
+
+def s_ask_change_ohm(_params, substep, state_history, state, _input) -> tuple:
+    return ("ask_change_ohm", _input["ask_change_ohm"])
+
+
+def s_ask_change_usd(_params, substep, state_history, state, _input) -> tuple:
+    return ("ask_change_usd", _input["ask_change_usd"])
