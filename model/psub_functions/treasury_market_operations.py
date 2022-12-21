@@ -90,3 +90,21 @@ def s_ask_change_cushion_usd(_params, substep, state_history, state, _input) -> 
 
 def s_ask_change_cushion_ohm(_params, substep, state_history, state, _input) -> tuple:
     return ("ask_change_cushion_ohm", _input["ask_change_cushion_ohm"])
+
+
+def p_real_bid_capacity_totals(_params, substep, state_history, state) -> dict:
+    return {"bid_capacity_cushion": state["bid_capacity_cushion"],
+            "bid_capacity": state["bid_capacity"]}
+
+
+def p_real_ask_capacity_totals(_params, substep, state_history, state) -> dict:
+    return {"ask_capacity_cushion": state["ask_capacity_cushion"],
+            "ask_capacity": state["ask_capacity"]}
+
+
+def s_bid_capacity(_params, substep, state_history, state, _input) -> tuple:
+    return ("bid_capacity", _input["bid_capacity"])
+
+
+def s_ask_capacity(_params, substep, state_history, state, _input) -> tuple:
+    return ("ask_capacity", _input["ask_capacity"])
