@@ -57,6 +57,7 @@ def effective_bid_capacity_cushion_policy(natural_price, lower_target_cushion, l
 
 
 def effective_ask_capacity_cushion_policy(natural_price, upper_target_cushion, upper_target_wall, ask_capacity_cushion_prior, ask_capacity_cushion):
+
     if natural_price > upper_target_cushion and natural_price <= upper_target_wall:
         ask_change_cushion_ohm = ask_capacity_cushion_prior - ask_capacity_cushion
         ask_change_cushion_usd = upper_target_cushion * \
@@ -71,3 +72,96 @@ def effective_ask_capacity_cushion_policy(natural_price, upper_target_cushion, u
         ask_change_cushion_usd = ask_capacity_cushion_prior * upper_target_cushion
 
     return ask_change_cushion_usd, ask_change_cushion_ohm
+
+
+def real_bid_capacity_totals_policy(target, lb_target, natural_price, lower_wall_param, bid_capacity_target,
+                                    bid_counter, min_counter_reinstate_param, with_reinstate_window_param, lower_target_cushion,
+                                    lower_target_wall, bid_capacity_prior, net_flow, reserves_in, liq_stables_prior, amm_k,
+                                    bid_change_cushion_usd, bid_capacity_cushion):
+
+    if target == lb_target and natural_price <= lb_target * (1 - lower_wall_param):
+        # Below liquid backing, the wall has infinite capacity (unlimited treasury redemptions at those levels)
+        bid_capacity = bid_capacity_target
+    elif (sum(bid_counter) >= min_counter_reinstate_param or with_reinstate_window_param == 'No') and natural_price > lower_target_cushion:  # Refill capacity
+        bid_capacity = bid_capacity_target
+    elif natural_price < lower_target_wall:  # Deploy cushion capcity
+        bid_capacity = bid_capacity_prior + net_flow - reserves_in + \
+            liq_stables_prior - (amm_k * lower_target_wall) ** (1/2)
+    else:
+        bid_capacity = bid_capacity_prior - bid_change_cushion_usd
+
+    if bid_capacity < 0:
+        bid_capacity = 0
+    elif bid_capacity > bid_capacity_target:
+        bid_capacity = bid_capacity_target
+
+    if bid_capacity_cushion > bid_capacity:
+        bid_capacity_cushion = bid_capacity
+
+    return bid_capacity_cushion, bid_capacity
+
+
+def real_ask_capacity_totals_policy(ask_capacity_cushion, ask_counter, min_counter_reinstate_param, with_reinstate_window_param,
+                                    natural_price, upper_target_cushion, ask_capacity_target, upper_target_wall, ask_capacity_prior, net_flow, reserves_in, liq_stables_prior,
+                                    amm_k, ask_change_cushion_ohm):
+    # ASK: Real Ask Capacity - Totals
+    if (sum(ask_counter) >= min_counter_reinstate_param or with_reinstate_window_param == 'No') and natural_price < upper_target_cushion:
+        ask_capacity = ask_capacity_target
+    elif natural_price > upper_target_wall:
+        ask_capacity = upper_target_wall and ask_capacity_prior - \
+            (net_flow - reserves_in + liq_stables_prior) / \
+            upper_target_wall + (amm_k / upper_target_wall) ** (1/2) or 0
+    else:
+        # update capacity total to account for the cushion
+        ask_capacity = ask_capacity_prior - ask_change_cushion_ohm
+
+    if ask_capacity < 0:
+        ask_capacity = 0
+    elif ask_capacity > ask_capacity_target:
+        ask_capacity = ask_capacity_target
+
+    if ask_capacity_cushion > ask_capacity:
+        ask_capacity_cushion = ask_capacity
+
+    return ask_capacity_cushion, ask_capacity
+
+
+def effective_bid_capacity_changes_totals_policy(target, lb_target, natural_price, lower_wall_param,
+                                                 reserves_in, net_flow, liq_stables_prior, amm_k, lower_target_wall, bid_change_cushion_usd, bid_change_cushion_ohm,
+                                                 bid_capacity_prior, bid_capacity):
+    # Below liquid backing, the wall has infinite capacity (unlimited treasury redemptions at those levels)
+    if target == lb_target and natural_price <= lb_target * (1 - lower_wall_param):
+        bid_change_usd = reserves_in - net_flow - \
+            liq_stables_prior + (amm_k * lower_target_wall) ** (1/2)
+        bid_change_ohm = lower_target_wall and bid_change_usd / lower_target_wall or 0
+    elif natural_price >= lower_target_wall:  # If wall wasn't used, update with cushion
+        bid_change_usd = bid_change_cushion_usd
+        bid_change_ohm = bid_change_cushion_ohm
+    else:
+        bid_change_usd = bid_capacity_prior - bid_capacity
+        bid_change_ohm = lower_target_wall and bid_change_cushion_ohm + \
+            (bid_capacity_prior - bid_capacity -
+             bid_change_cushion_usd) / lower_target_wall or 0
+
+    if bid_change_usd > bid_capacity_prior:  # Ensure that change is smaller than capacity left
+        bid_change_usd = bid_capacity_prior
+        bid_change_ohm = lower_target_wall and bid_capacity_prior / lower_target_wall or 0
+    return bid_change_ohm, bid_change_usd
+
+
+def effective_ask_capacity_changes_totals_policy(natural_price, upper_target_wall, ask_change_cushion_ohm, ask_change_cushion_usd,
+                                                 ask_capacity_prior, ask_capacity):
+    if natural_price <= upper_target_wall:  # if wall wasn't used, update with cushion
+        ask_change_ohm = ask_change_cushion_ohm
+        ask_change_usd = ask_change_cushion_usd
+    else:
+        ask_change_ohm = ask_capacity_prior - ask_capacity
+        ask_change_usd = ask_change_cushion_usd + \
+            (ask_capacity_prior - ask_capacity -
+             ask_change_cushion_ohm) * upper_target_wall
+
+    if ask_change_ohm > ask_capacity_prior:  # ensure that change is smaller than capacity left
+        ask_change_ohm = ask_capacity_prior
+        ask_change_usd = ask_capacity_prior * upper_target_wall
+
+    return ask_change_ohm, ask_change_usd

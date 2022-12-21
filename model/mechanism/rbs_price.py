@@ -69,7 +69,8 @@ def s_lower_target_wall(params, substep, state_history, state, _input) -> tuple:
 
 def s_lower_target_cushion(params, substep, state_history, state, _input) -> tuple:
     assert _input['lower_target_cushion'] > 0
-    assert _input['lower_target_cushion'] < _input['upper_target_cushion']
+    assert _input['lower_target_cushion'] < _input['upper_target_cushion'], "lower_target_cushion: {}, upper_target_cushion: {}, timestep: {}".format(
+        _input['lower_target_cushion'], _input['upper_target_cushion'], len(state_history))
 
     return ("lower_target_cushion", _input['lower_target_cushion'])
 
@@ -77,6 +78,7 @@ def s_lower_target_cushion(params, substep, state_history, state, _input) -> tup
 def s_upper_target_cushion(params, substep, state_history, state, _input) -> tuple:
 
     assert _input['upper_target_cushion'] > 0
-    assert _input['lower_target_cushion'] < _input['upper_target_cushion']
+    assert _input['lower_target_cushion'] < _input['upper_target_cushion'], "lower_target_cushion: {}, upper_target_cushion: {}, timestep: {}".format(
+        _input['lower_target_cushion'], _input['upper_target_cushion'], len(state_history))
 
     return ("upper_target_cushion", _input['upper_target_cushion'])
