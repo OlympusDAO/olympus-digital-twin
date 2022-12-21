@@ -1,6 +1,6 @@
 from ..policy.treasury_market_operations import (real_bid_capacity_cushion_policy, real_ask_capacity_cushion_policy,
                                                  effective_bid_capacity_cushion_policy, effective_ask_capacity_cushion_policy,
-                                                 real_bid_capacity_totals_policy)
+                                                 real_bid_capacity_totals_policy, real_ask_capacity_totals_policy)
 
 
 def p_real_bid_capacity_cushion(_params, substep, state_history, state) -> dict:
@@ -123,8 +123,27 @@ def p_real_bid_capacity_totals(_params, substep, state_history, state) -> dict:
 
 
 def p_real_ask_capacity_totals(_params, substep, state_history, state) -> dict:
-    return {"ask_capacity_cushion": state["ask_capacity_cushion"],
-            "ask_capacity": state["ask_capacity"]}
+    prev_day = state_history[-1][-1]
+    ask_capacity_cushion = state["ask_capacity_cushion"]
+    ask_counter = state["ask_counter"]
+    min_counter_reinstate_param = _params["min_counter_reinstate"]
+    with_reinstate_window_param = _params["with_reinstate_window"]
+    natural_price = state["natural_price"]
+    upper_target_cushion = state["upper_target_cushion"]
+    upper_target_wall = state["upper_target_wall"]
+    net_flow = state["net_flow"]
+    reserves_in = state["reserves_in"]
+    liq_stables_prior = prev_day["liq_stables"]
+    amm_k = state["amm_k"]
+    ask_capacity_target = state["ask_capacity_target"]
+    ask_capacity_prior = prev_day["ask_capacity"]
+    ask_change_cushion_ohm = state["ask_change_cushion_ohm"]
+
+    ask_capacity_cushion, ask_capacity = real_ask_capacity_totals_policy(ask_capacity_cushion, ask_counter, min_counter_reinstate_param, with_reinstate_window_param,
+                                                                         natural_price, upper_target_cushion, ask_capacity_target, upper_target_wall, ask_capacity_prior, net_flow, reserves_in, liq_stables_prior,
+                                                                         amm_k, ask_change_cushion_ohm)
+    return {"ask_capacity_cushion": ask_capacity_cushion,
+            "ask_capacity": ask_capacity}
 
 
 def s_bid_capacity(_params, substep, state_history, state, _input) -> tuple:

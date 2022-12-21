@@ -98,3 +98,28 @@ def real_bid_capacity_totals_policy(target, lb_target, natural_price, lower_wall
         bid_capacity_cushion = bid_capacity
 
     return bid_capacity_cushion, bid_capacity
+
+
+def real_ask_capacity_totals_policy(ask_capacity_cushion, ask_counter, min_counter_reinstate_param, with_reinstate_window_param,
+                                    natural_price, upper_target_cushion, ask_capacity_target, upper_target_wall, ask_capacity_prior, net_flow, reserves_in, liq_stables_prior,
+                                    amm_k, ask_change_cushion_ohm):
+    # ASK: Real Ask Capacity - Totals
+    if (sum(ask_counter) >= min_counter_reinstate_param or with_reinstate_window_param == 'No') and natural_price < upper_target_cushion:
+        ask_capacity = ask_capacity_target
+    elif natural_price > upper_target_wall:
+        ask_capacity = upper_target_wall and ask_capacity_prior - \
+            (net_flow - reserves_in + liq_stables_prior) / \
+            upper_target_wall + (amm_k / upper_target_wall) ** (1/2) or 0
+    else:
+        # update capacity total to account for the cushion
+        ask_capacity = ask_capacity_prior - ask_change_cushion_ohm
+
+    if ask_capacity < 0:
+        ask_capacity = 0
+    elif ask_capacity > ask_capacity_target:
+        ask_capacity = ask_capacity_target
+
+    if ask_capacity_cushion > ask_capacity:
+        ask_capacity_cushion = ask_capacity
+
+    return ask_capacity_cushion, ask_capacity
