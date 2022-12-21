@@ -1,6 +1,7 @@
 from ..policy.treasury_market_operations import (real_bid_capacity_cushion_policy, real_ask_capacity_cushion_policy,
                                                  effective_bid_capacity_cushion_policy, effective_ask_capacity_cushion_policy,
-                                                 real_bid_capacity_totals_policy, real_ask_capacity_totals_policy,)
+                                                 real_bid_capacity_totals_policy, real_ask_capacity_totals_policy,
+                                                 effective_bid_capacity_changes_totals_policy)
 
 
 def p_real_bid_capacity_cushion(_params, substep, state_history, state) -> dict:
@@ -155,8 +156,27 @@ def s_ask_capacity(_params, substep, state_history, state, _input) -> tuple:
 
 
 def p_effective_bid_capacity_changes_totals(_params, substep, state_history, state) -> dict:
-    return {"bid_change_ohm": state["bid_change_ohm"],
-            "bid_change_usd": state["bid_change_usd"]}
+    prev_day = state_history[-1][-1]
+
+    natural_price = state["natural_price"]
+    lower_target_wall = state["lower_target_wall"]
+    net_flow = state["net_flow"]
+    reserves_in = state["reserves_in"]
+    liq_stables_prior = prev_day["liq_stables"]
+    amm_k = state["amm_k"]
+    target = state["price_target"]
+    lb_target = state["lb_target"]
+    lower_wall_param = _params["lower_wall"]
+    bid_capacity_prior = prev_day["bid_capacity"]
+    bid_change_cushion_usd = state["bid_change_cushion_usd"]
+    bid_change_cushion_ohm = state["bid_change_cushion_ohm"]
+    bid_capacity = state["bid_capacity"]
+
+    bid_change_ohm, bid_change_usd = effective_bid_capacity_changes_totals_policy(target, lb_target, natural_price, lower_wall_param,
+                                                                                  reserves_in, net_flow, liq_stables_prior, amm_k, lower_target_wall, bid_change_cushion_usd, bid_change_cushion_ohm,
+                                                                                  bid_capacity_prior, bid_capacity)
+    return {"bid_change_ohm": bid_change_ohm,
+            "bid_change_usd": bid_change_usd}
 
 
 def p_effective_ask_capacity_changes_totals(_params, substep, state_history, state) -> dict:
