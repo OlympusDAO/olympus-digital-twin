@@ -21,3 +21,14 @@ def p_reserves_in(params, substep, state_history, state) -> dict:
     else:
         reserves_in = 0
     return {'reserves_in': reserves_in}
+
+
+def treasury_liquidity_policy(liq_stables_prior, net_flow, reserves_in, bid_change_usd, ask_change_usd, amm_k):
+    liq_stables = max(liq_stables_prior + net_flow -
+                      reserves_in + bid_change_usd - ask_change_usd, 0)
+    # ensure that if liq_stables is 0 then liq_ohm is 0 as well
+    liq_ohm = liq_stables and amm_k / liq_stables or 0
+    # ensure that if liq_ohm is 0 then price is 0 as well
+    price = liq_ohm and liq_stables / liq_ohm or 0
+
+    return liq_stables, liq_ohm, price

@@ -1,7 +1,7 @@
 from .psub_functions.demand import p_demand, s_demand, s_netflow
 from .psub_functions.reward_rate import p_reward_rate, s_reward_rate
 from .psub_functions.amm_k import s_amm_k
-from .psub_functions.treasury import p_treasury
+from .psub_functions.treasury import p_treasury, s_liq_stables, s_liq_ohm, s_price
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
 from .policy.treasury import p_reserves_in
@@ -181,10 +181,11 @@ effective_capacity_changes_totals_block = {'policies': {
         "ask_change_usd": s_ask_change_usd, }}
 
 treasury_block = {'policies': {"treasury": p_treasury},
-                  'variables': {}}
+                  'variables': {"liq_stables": s_liq_stables, "liq_ohm": s_liq_ohm, "price": s_price}}
 
 psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block, supply_block, reserves_in_block, amm_k_block,
                price_target_block1, price_target_block2, target_walls_block, cushions_block,
                reinstate_counter_block, demand_block, target_capacities_block, real_capacity_cushion_block,
                effective_capacity_cushion_block, real_capacity_totals_block, effective_capacity_changes_totals_block,
+               treasury_block,
                price_history_block]
