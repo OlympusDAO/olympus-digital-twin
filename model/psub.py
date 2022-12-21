@@ -1,6 +1,7 @@
 from .psub_functions.demand import p_demand, s_demand, s_netflow
 from .psub_functions.reward_rate import p_reward_rate, s_reward_rate
 from .psub_functions.amm_k import s_amm_k
+from .psub_functions.treasury import p_treasury
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
 from .policy.treasury import p_reserves_in
@@ -10,7 +11,7 @@ from .psub_functions.target_capacity import p_target_capacity, s_bid_capacity_ta
 from .psub_functions.treasury_market_operations import (p_real_bid_capacity_cushion, p_real_ask_capacity_cushion, s_bid_capacity_cushion, s_ask_capacity_cushion,
                                                         p_effective_bid_capacity_cushion, p_effective_ask_capacity_cushion, s_bid_change_cushion_usd, s_bid_change_cushion_ohm, s_ask_change_cushion_usd, s_ask_change_cushion_ohm,
                                                         p_real_bid_capacity_totals, p_real_ask_capacity_totals, s_bid_capacity, s_ask_capacity,
-                                                        p_effective_bid_capacity_changes_totals, p_effective_ask_capacity_changes_totals, s_bid_change_ohm, s_bid_change_usd, s_ask_change_ohm, s_ask_change_usd
+                                                        p_effective_bid_capacity_changes_totals, p_effective_ask_capacity_changes_totals, s_bid_change_ohm, s_bid_change_usd, s_ask_change_ohm, s_ask_change_usd,
                                                         )
 
 reward_rate_block = {'policies': {
@@ -179,6 +180,8 @@ effective_capacity_changes_totals_block = {'policies': {
         "ask_change_ohm": s_ask_change_ohm,
         "ask_change_usd": s_ask_change_usd, }}
 
+treasury_block = {'policies': {"treasury": p_treasury},
+                  'variables': {}}
 
 psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block, supply_block, reserves_in_block, amm_k_block,
                price_target_block1, price_target_block2, target_walls_block, cushions_block,
