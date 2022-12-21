@@ -32,3 +32,18 @@ def treasury_liquidity_policy(liq_stables_prior, net_flow, reserves_in, bid_chan
     price = liq_ohm and liq_stables / liq_ohm or 0
 
     return liq_stables, liq_ohm, price
+
+
+def treasury_reserves_policy(liq_stables, liq_stables_prior, net_flow, reserves_stables_prior,
+                             price, price_prior, cum_ohm_purchased_prior, cum_ohm_burnt_prior, cum_ohm_minted_prior, bid_change_ohm, ask_change_ohm):
+    reserves_out = liq_stables - liq_stables_prior - \
+        net_flow
+    reserves_stables = max(reserves_stables_prior - reserves_out, 0)
+
+    ohm_traded = (price + price_prior) and (-2) * \
+        reserves_out / (price + price_prior) or 0
+    cum_ohm_purchased = cum_ohm_purchased_prior - ohm_traded
+    cum_ohm_burnt = cum_ohm_burnt_prior + bid_change_ohm
+    cum_ohm_minted = cum_ohm_minted_prior + ask_change_ohm
+
+    return reserves_out, reserves_stables, ohm_traded, cum_ohm_purchased, cum_ohm_burnt, cum_ohm_minted

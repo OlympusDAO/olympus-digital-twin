@@ -1,7 +1,8 @@
 from .psub_functions.demand import p_demand, s_demand, s_netflow
 from .psub_functions.reward_rate import p_reward_rate, s_reward_rate
 from .psub_functions.amm_k import s_amm_k
-from .psub_functions.treasury import p_treasury, s_liq_stables, s_liq_ohm, s_price
+from .psub_functions.treasury import p_treasury, s_liq_stables, s_liq_ohm, s_price, s_reserves_out, s_reserves_stables, s_ohm_traded, s_cum_ohm_purchased, s_cum_ohm_burnt, s_cum_ohm_minted
+
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
 from .policy.treasury import p_reserves_in
@@ -181,7 +182,14 @@ effective_capacity_changes_totals_block = {'policies': {
         "ask_change_usd": s_ask_change_usd, }}
 
 treasury_block = {'policies': {"treasury": p_treasury},
-                  'variables': {"liq_stables": s_liq_stables, "liq_ohm": s_liq_ohm, "price": s_price}}
+                  'variables': {"liq_stables": s_liq_stables, "liq_ohm": s_liq_ohm, "price": s_price,
+                                "reserves_out": s_reserves_out,
+                                "reserves_stables": s_reserves_stables,
+                                "ohm_traded": s_ohm_traded,
+                                "cum_ohm_purchased": s_cum_ohm_purchased,
+                                "cum_ohm_burnt": s_cum_ohm_burnt,
+                                "cum_ohm_minted": s_cum_ohm_minted}}
+
 
 psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block, supply_block, reserves_in_block, amm_k_block,
                price_target_block1, price_target_block2, target_walls_block, cushions_block,
