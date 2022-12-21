@@ -1,23 +1,24 @@
 def p_reserves_in(params, substep, state_history, state) -> dict:
-    day = len(state_history)  # note: not sure if this is the right way!!
+    day = len(state_history)
+    prior_day = state_history[-1][-1]
 
     if day % 7 == 0:  # Rebalance once a week
-        reserves_in = state["liq_stables"] - \
-            state["treasury_stables"] * params["max_liq_ratio"]
-        if state["target_liq_ratio_reached"] is False:
+        reserves_in = prior_day["liq_stables"] - \
+            prior_day["treasury_stables"] * params["max_liq_ratio"]
+        if prior_day["target_liq_ratio_reached"] is False:
             # Smaller max_outflow_rate until target is first reached
-            max_outflow = (-1) * state["reserves_stables"] * \
+            max_outflow = (-1) * prior_day["reserves_stables"] * \
                 params["max_outflow_rate"] * 2 / 3
         else:
             # Ensure that the reserve release is limited by max_outflow_rate
-            max_outflow = (-1) * state["reserves_stables"] * \
+            max_outflow = (-1) * prior_day["reserves_stables"] * \
                 params["max_outflow_rate"]
 
         if reserves_in < max_outflow:
             reserves_in = max_outflow
         # Ensure that the reserve release is limited by the total reserves left
-        if reserves_in < (-1) * state["reserves_stables"]:
-            reserves_in = (-1) * state["reserves_stables"]
+        if reserves_in < (-1) * prior_day["reserves_stables"]:
+            reserves_in = (-1) * prior_day["reserves_stables"]
     else:
         reserves_in = 0
     return {'reserves_in': reserves_in}
