@@ -146,3 +146,21 @@ def effective_bid_capacity_changes_totals_policy(target, lb_target, natural_pric
         bid_change_usd = bid_capacity_prior
         bid_change_ohm = lower_target_wall and bid_capacity_prior / lower_target_wall or 0
     return bid_change_ohm, bid_change_usd
+
+
+def effective_ask_capacity_changes_totals_policy(natural_price, upper_target_wall, ask_change_cushion_ohm, ask_change_cushion_usd,
+                                                 ask_capacity_prior, ask_capacity):
+    if natural_price <= upper_target_wall:  # if wall wasn't used, update with cushion
+        ask_change_ohm = ask_change_cushion_ohm
+        ask_change_usd = ask_change_cushion_usd
+    else:
+        ask_change_ohm = ask_capacity_prior - ask_capacity
+        ask_change_usd = ask_change_cushion_usd + \
+            (ask_capacity_prior - ask_capacity -
+             ask_change_cushion_ohm) * upper_target_wall
+
+    if ask_change_ohm > ask_capacity_prior:  # ensure that change is smaller than capacity left
+        ask_change_ohm = ask_capacity_prior
+        ask_change_usd = ask_capacity_prior * upper_target_wall
+
+    return ask_change_ohm, ask_change_usd

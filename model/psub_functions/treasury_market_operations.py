@@ -1,7 +1,7 @@
 from ..policy.treasury_market_operations import (real_bid_capacity_cushion_policy, real_ask_capacity_cushion_policy,
                                                  effective_bid_capacity_cushion_policy, effective_ask_capacity_cushion_policy,
                                                  real_bid_capacity_totals_policy, real_ask_capacity_totals_policy,
-                                                 effective_bid_capacity_changes_totals_policy)
+                                                 effective_bid_capacity_changes_totals_policy, effective_ask_capacity_changes_totals_policy)
 
 
 def p_real_bid_capacity_cushion(_params, substep, state_history, state) -> dict:
@@ -180,8 +180,19 @@ def p_effective_bid_capacity_changes_totals(_params, substep, state_history, sta
 
 
 def p_effective_ask_capacity_changes_totals(_params, substep, state_history, state) -> dict:
-    return {"ask_change_ohm": state["ask_change_ohm"],
-            "ask_change_usd": state["ask_change_usd"]}
+    prev_day = state_history[-1][-1]
+
+    natural_price = state["natural_price"]
+    upper_target_wall = state["upper_target_wall"]
+
+    ask_capacity_prior = prev_day["ask_capacity"]
+    ask_change_cushion_ohm = state["ask_change_cushion_ohm"]
+    ask_change_cushion_usd = state["ask_change_cushion_usd"]
+    ask_capacity = state["ask_capacity"]
+    ask_change_ohm, ask_change_usd = effective_ask_capacity_changes_totals_policy(natural_price, upper_target_wall, ask_change_cushion_ohm, ask_change_cushion_usd,
+                                                                                  ask_capacity_prior, ask_capacity)
+    return {"ask_change_ohm": ask_change_ohm,
+            "ask_change_usd": ask_change_usd}
 
 
 def s_bid_change_ohm(_params, substep, state_history, state, _input) -> tuple:
