@@ -1,6 +1,6 @@
 from ..behavioral.ohmbond import bond_sell_batch_auction
 def p_bond_create(params, substep, state_history, state) -> dict:
-    day = len(state_history[-1])
+    day = len(state_history)
     bond_create_schedule = params['bond_create_schedule']
     bondday = bond_create_schedule.loc[bond_create_schedule['start_days']==day]
     if len(bondday): # if today has been scheduled to create bond
@@ -22,7 +22,7 @@ def s_ohm_bonded(_params, substep, state_history, state, _input) -> tuple:
     return ('ohm_bonded',state['ohm_bonded']+new_ohm_bonded)
 
 def s_bond_expire(_params, substep, state_history, state, _input) -> tuple:
-    day = len(state_history[-1])
+    day = len(state_history)
     bonds = state['bond_created']
     release_amount = 0
     for bond in bonds:
