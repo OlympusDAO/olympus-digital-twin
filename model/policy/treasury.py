@@ -1,5 +1,5 @@
 def p_reserves_in(params, substep, state_history, state) -> dict:
-    day = len(state_history)
+    day = len(state_history[-1])
     prior_day = state_history[-1][-1]
 
     if day % 7 == 0:  # Rebalance once a week
