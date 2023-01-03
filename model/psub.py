@@ -14,6 +14,13 @@ from .psub_functions.treasury_market_operations import (p_real_bid_capacity_cush
                                                         p_real_bid_capacity_totals, p_real_ask_capacity_totals, s_bid_capacity, s_ask_capacity,
                                                         p_effective_bid_capacity_changes_totals, p_effective_ask_capacity_changes_totals, s_bid_change_ohm, s_bid_change_usd, s_ask_change_ohm, s_ask_change_usd,
                                                         )
+from .psub_functions.ohmbond import p_bond_create,s_bond_create,s_bond_created_today,s_ohm_bonded,s_bond_expire,p_bond_sell,s_liq_ohm_into_bond
+
+from .mechanism.supply import s_supply
+from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
+from .policy.treasury import p_reserves_in
+from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_price_target, s_upper_target_wall, s_lower_target_wall, s_lower_target_cushion, s_upper_target_cushion, s_bid_counter, s_ask_counter
+from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
 
 reward_rate_block = {'policies': {
     'reward_rate': p_reward_rate
@@ -27,7 +34,7 @@ demand_block = {
         'supply_demand': p_demand
     },
     'variables': {
-        'market_demand_supply': s_demand,
+        'market_demand_supply': s_demand, # factors
         'net_flow': s_netflow
     }
 }
@@ -52,6 +59,8 @@ price_history_block = {
         "price_history": s_price_history
     }
 }
+
+# ---- RBS-----
 
 reinstate_counter_block = {
     'policies': {
@@ -102,7 +111,36 @@ cushions_block = {
         'upper_target_cushion': s_upper_target_cushion
     }
 }
+# ---ohm bond----
+bond_creation_block = {
+    'policies':{
+        'create_bond':p_bond_create
+    },
+    'variables':{
+        'bond_created':s_bond_create,
+        'bond_created_today':s_bond_created_today,
+        'ohm_bonded':s_ohm_bonded
+    }
+}
 
+bond_sell_block = {
+    'policies':{
+        'bond_sell':p_bond_sell
+    },
+    'variables':{
+        'liq_ohm_into_bond':s_liq_ohm_into_bond
+    }
+}
+
+bond_expiration_block = {
+    'policies':{
+        
+    },
+    'variables':{
+        'bond_created':s_bond_expire
+    }
+}
+# ---system----
 
 supply_block = {
     'policies': {
@@ -209,7 +247,7 @@ protocol_block = {
     }
 
 
-psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block, supply_block, reserves_in_block, amm_k_block,
+psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block,bond_creation_block,bond_sell_block,bond_expiration_block, supply_block, reserves_in_block, amm_k_block,
                price_target_block1, price_target_block2, target_walls_block, cushions_block,
                reinstate_counter_block, demand_block, target_capacities_block, real_capacity_cushion_block,
                effective_capacity_cushion_block, real_capacity_totals_block, effective_capacity_changes_totals_block,
