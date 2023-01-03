@@ -2,6 +2,12 @@ from .psub_functions.demand import p_demand, s_demand, s_netflow
 from .psub_functions.reward_rate import p_reward_rate, s_reward_rate
 from .psub_functions.amm_k import s_amm_k
 from .psub_functions.treasury import p_treasury, s_liq_stables, s_liq_ohm, s_price, s_reserves_out, s_reserves_stables, s_ohm_traded, s_cum_ohm_purchased, s_cum_ohm_burnt, s_cum_ohm_minted
+from .psub_functions.protocol import p_protocol,s_floating_supply,s_mcap,s_floating_mcap,s_liq_ratio,s_target_liq_ratio_reached,s_reserves_ratio,s_fmcap_treasury_ratio,s_liq_fmcap_ratio,s_total_demand,s_total_supply,s_total_net
+from .mechanism.supply import s_supply
+from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
+from .policy.treasury import p_reserves_in
+from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_price_target, s_upper_target_wall, s_lower_target_wall, s_lower_target_cushion, s_upper_target_cushion, s_bid_counter, s_ask_counter
+from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
 from .psub_functions.target_capacity import p_target_capacity, s_bid_capacity_target, s_ask_capacity_target, s_bid_capacity_target_cushion, s_ask_capacity_target_cushion, s_natural_price
 from .psub_functions.treasury_market_operations import (p_real_bid_capacity_cushion, p_real_ask_capacity_cushion, s_bid_capacity_cushion, s_ask_capacity_cushion,
                                                         p_effective_bid_capacity_cushion, p_effective_ask_capacity_cushion, s_bid_change_cushion_usd, s_bid_change_cushion_ohm, s_ask_change_cushion_usd, s_ask_change_cushion_ohm,
@@ -221,6 +227,24 @@ treasury_block = {'policies': {"treasury": p_treasury},
                                 "cum_ohm_purchased": s_cum_ohm_purchased,
                                 "cum_ohm_burnt": s_cum_ohm_burnt,
                                 "cum_ohm_minted": s_cum_ohm_minted}}
+protocol_block = {
+    'policies':{
+        'protocol':p_protocol
+        },
+    'variables':{
+        'floating_supply':s_floating_supply,
+        'mcap':s_mcap,
+        'floating_mcap':s_floating_mcap,
+        'liq_ratio':s_liq_ratio,
+        'target_liq_ratio_reached':s_target_liq_ratio_reached,
+        'reserves_ratio':s_reserves_ratio,
+        'fmcap_treasury_ratio':s_fmcap_treasury_ratio,
+        'liq_fmcap_ratio':s_liq_fmcap_ratio,
+        'total_demand':s_total_demand,
+        'total_supply':s_total_supply,
+        'total_net':s_total_net
+    }
+    }
 
 
 psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block,bond_creation_block,bond_sell_block,bond_expiration_block, supply_block, reserves_in_block, amm_k_block,
@@ -228,4 +252,4 @@ psub_blocks = [treasury_stables_block, liq_backing_block, reward_rate_block,bond
                reinstate_counter_block, demand_block, target_capacities_block, real_capacity_cushion_block,
                effective_capacity_cushion_block, real_capacity_totals_block, effective_capacity_changes_totals_block,
                treasury_block,
-               price_history_block]
+               price_history_block,protocol_block]
