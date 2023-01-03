@@ -131,7 +131,7 @@ bond_expiration_block = {
         
     },
     'variables':{
-        'bond_created':s_bond_expire
+        'ohm_released':s_bond_expire
     }
 }
 # ---system----
