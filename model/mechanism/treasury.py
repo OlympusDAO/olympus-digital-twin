@@ -8,11 +8,6 @@ def s_treasury_stables(params, substep, state_history, state,_input) -> tuple:
 def liq_ohm_mechanism(liq_stables,price)->OHM:
     return liq_stables / price
 
-def floating_supply_mechanism(supply,liq_ohm)->OHM:
-    return  max(supply - liq_ohm, 0)
-
-def s_floating_supply(params,substep, state_history, state,_input) -> tuple:
-    return floating_supply_mechanism(state['supply'],state['liq_ohm'])
 
 def liq_backing_mechanism(stables,volatiles)->USD:
     return stables + volatiles
