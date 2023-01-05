@@ -8,6 +8,7 @@ def s_treasury_stables(params, substep, state_history, state,_input) -> tuple:
 def liq_ohm_mechanism(liq_stables,price)->OHM:
     return liq_stables / price
 
+
 def liq_backing_mechanism(stables,volatiles)->USD:
     return stables + volatiles
 def s_liq_backing(params,substep, state_history, state,_input) -> tuple:
