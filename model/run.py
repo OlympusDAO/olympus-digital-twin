@@ -61,4 +61,12 @@ def post_processing(raw) -> pd.DataFrame:
     df["control_ask"] = df["ask_counter"].apply(lambda x: sum(x))
     df["control_bid"] = df["bid_counter"].apply(lambda x: sum(x))
 
+    # Add a unique ID to make grouping easier
+    df["unique_id"] = df["simulation"].astype(
+        str) + "-" + df["subset"].astype(str) + "-" + df["run"].astype(str)
+
+    # Backfill parameter values
+    df[["demand_factor", "supply_factor"]] = df[[
+        "demand_factor", "supply_factor"]].fillna(method="bfill")
+
     return df
