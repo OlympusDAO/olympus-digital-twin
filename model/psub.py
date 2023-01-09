@@ -30,6 +30,7 @@ meta_block = {'policies': {
     'variables': {
         'demand_factor': s_list_params("demand_factor"),
         'supply_factor': s_list_params("supply_factor"),
+        'bond_annual_discount_rate': s_list_params("bond_annual_discount_rate"),
 }}
 
 reward_rate_block = {'policies': {
