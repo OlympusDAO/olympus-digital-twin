@@ -8,7 +8,7 @@ This repository holds the cadCAD model created by BlockScience for Olympus DAO. 
 ## What is cadCAD
 ## Installing cadCAD for running this repo
 
-### 0. Pre-installation Virtual Environments with [`venv`](https://docs.python.org/3/library/venv.html) (Optional):
+### 1. Pre-installation Virtual Environments with [`venv`](https://docs.python.org/3/library/venv.html) (Optional):
 It's a good package managing practice to create an easy to use virtual environment to install cadCAD. You can use the built in `venv` package.
 
 ***Create** a virtual environment:*
@@ -28,7 +28,7 @@ $ source ~/cadcad/bin/activate
 $
 ```
 
-### 1. Installation: 
+### 2. Installation: 
 Requires [>= Python 3.6](https://www.python.org/downloads/) 
 
 **Install Using [pip](https://pypi.org/project/cadCAD/)** 
