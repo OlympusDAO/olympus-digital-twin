@@ -41,6 +41,6 @@ def s_ask_capacity_target_cushion(_params, substep, state_history, state, _input
 
 
 def s_natural_price(_params, substep, state_history, state, _input) -> tuple:
-    assert _input["natural_price"] > 0
+    assert _input["natural_price"] > 0, "natural price should be bigger than 0"
 
     return ("natural_price", _input["natural_price"])

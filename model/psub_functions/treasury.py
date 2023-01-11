@@ -37,7 +37,7 @@ def s_liq_ohm(_params, substep, state_history, state, _input) -> tuple:
 
 
 def s_price(_params, substep, state_history, state, _input) -> tuple:
-    assert _input["price"] > 0
+    assert _input["price"] > 0, "price should be bigger than 0"
     return ("price", _input["price"])
 
 
