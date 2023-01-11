@@ -10,4 +10,4 @@ def reward_rate_policy(state: StateType, params: ParamsType):
     if params["reward_rate_policy"] == "Flat":
         return reward_rate_policy_flat()
     else:
-        assert False
+        assert False,"reward_rate_policy should be 'flat'."
