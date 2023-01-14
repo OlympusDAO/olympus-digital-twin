@@ -23,5 +23,6 @@ default_params1 = {"demand_factor": [.07],
                    "min_counter_reinstate": [6],
                    "with_reinstate_window": ['Yes'],
                    "bond_create_schedule": [generate_ohmbond(amounts=[[1e6]*3], exp_durs=[[30, 60, 90]])],
-                   "bond_annual_discount_rate": [.04]
+                   "bond_annual_discount_rate": [.04],
+                   "ohm_bond_to_netflow_ratio":[0.5] #should be between 0 and 1
                    }
