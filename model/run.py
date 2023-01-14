@@ -66,7 +66,7 @@ def post_processing(raw) -> pd.DataFrame:
         str) + "-" + df["subset"].astype(str) + "-" + df["run"].astype(str)
 
     # Backfill parameter values
-    df[["demand_factor", "supply_factor", "bond_annual_discount_rate"]] = df[[
-        "demand_factor", "supply_factor", "bond_annual_discount_rate"]].fillna(method="bfill")
+    df[["demand_factor", "supply_factor", "bond_annual_discount_rate","ohm_bond_to_netflow_ratio"]] = df[[
+        "demand_factor", "supply_factor", "bond_annual_discount_rate","ohm_bond_to_netflow_ratio"]].fillna(method="bfill")
 
     return df

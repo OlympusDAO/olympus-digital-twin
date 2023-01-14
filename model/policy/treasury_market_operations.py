@@ -6,7 +6,7 @@ def real_bid_capacity_cushion_policy(bid_counter, min_counter_reinstate, with_re
     elif natural_price < lower_target_cushion and natural_price >= lower_target_wall:  # Deploy cushion capcity
         bid_capacity_cushion = bid_capacity_target_cushion_prior + \
             net_flow - reserves_in + liq_stables_prior - \
-            (amm_k + lower_target_cushion) ** (1/2)
+            (amm_k * lower_target_cushion) ** (1/2)
 
     else:
         bid_capacity_cushion = bid_capacity_cushion_prior
