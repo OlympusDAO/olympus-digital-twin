@@ -38,6 +38,10 @@ default_initial_state1 = {  # variable values borrowed from liquidity-olympus/si
     "ohm_traded": None,
     "cum_ohm_purchased": 0,
     "cum_ohm_burnt": 0,
-    "cum_ohm_minted": 0
+    "cum_ohm_minted": 0,
+    "cum_ohm_minted_forbond":0,
+    'cum_ohm_burned_frombond':0,
+    "netflow_bondexpire":0,
+    "netflow_bondsale":0
 
 }

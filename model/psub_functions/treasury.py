@@ -5,6 +5,8 @@ def p_treasury(params, substep, state_history, state) -> dict:
     prev_day = state_history[-1][-1]
     liq_stables_prior = prev_day["liq_stables"]
     net_flow = state["net_flow"]
+    net_flow_bondsale = state['netflow_bondsale']
+    net_flow_bondexpire = state['netflow_bondexpire']
     reserves_in = state["reserves_in"]
     bid_change_usd = state["bid_change_usd"]
     ask_change_usd = state["ask_change_usd"]
@@ -18,9 +20,9 @@ def p_treasury(params, substep, state_history, state) -> dict:
     ask_change_ohm = state["ask_change_ohm"]
 
     liq_stables, liq_ohm, price = treasury_liquidity_policy(
-        liq_stables_prior, net_flow, reserves_in, bid_change_usd, ask_change_usd, amm_k)
+        liq_stables_prior, net_flow, net_flow_bondsale, net_flow_bondexpire, reserves_in, bid_change_usd, ask_change_usd, amm_k)
 
-    reserves_out, reserves_stables, ohm_traded, cum_ohm_purchased, cum_ohm_burnt, cum_ohm_minted = treasury_reserves_policy(liq_stables, liq_stables_prior, net_flow, reserves_stables_prior,
+    reserves_out, reserves_stables, ohm_traded, cum_ohm_purchased, cum_ohm_burnt, cum_ohm_minted = treasury_reserves_policy(liq_stables, liq_stables_prior, net_flow, net_flow_bondsale, net_flow_bondexpire, reserves_stables_prior,
                                                                                                                             price, price_prior, cum_ohm_purchased_prior, cum_ohm_burnt_prior, cum_ohm_minted_prior, bid_change_ohm, ask_change_ohm)
     return {"liq_stables": liq_stables,
             "liq_ohm": liq_ohm,

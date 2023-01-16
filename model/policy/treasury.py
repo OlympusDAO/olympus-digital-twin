@@ -24,8 +24,8 @@ def p_reserves_in(params, substep, state_history, state) -> dict:
     return {'reserves_in': reserves_in}
 
 
-def treasury_liquidity_policy(liq_stables_prior, net_flow, reserves_in, bid_change_usd, ask_change_usd, amm_k):
-    liq_stables = max(liq_stables_prior + net_flow -
+def treasury_liquidity_policy(liq_stables_prior, net_flow, net_flow_bondsale, net_flow_bondexpire, reserves_in, bid_change_usd, ask_change_usd, amm_k):
+    liq_stables = max(liq_stables_prior + net_flow + net_flow_bondsale + net_flow_bondexpire -
                       reserves_in + bid_change_usd - ask_change_usd, 0)
     # ensure that if liq_stables is 0 then liq_ohm is 0 as well
     liq_ohm = liq_stables and amm_k / liq_stables or 0
@@ -35,10 +35,10 @@ def treasury_liquidity_policy(liq_stables_prior, net_flow, reserves_in, bid_chan
     return liq_stables, liq_ohm, price
 
 
-def treasury_reserves_policy(liq_stables, liq_stables_prior, net_flow, reserves_stables_prior,
+def treasury_reserves_policy(liq_stables, liq_stables_prior, net_flow, net_flow_bondsale, net_flow_bondexpire, reserves_stables_prior,
                              price, price_prior, cum_ohm_purchased_prior, cum_ohm_burnt_prior, cum_ohm_minted_prior, bid_change_ohm, ask_change_ohm):
     reserves_out = liq_stables - liq_stables_prior - \
-        net_flow
+        (net_flow + net_flow_bondsale + net_flow_bondexpire)
     reserves_stables = max(reserves_stables_prior - reserves_out, 0)
 
     ohm_traded = (price + price_prior) and (-2) * \

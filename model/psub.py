@@ -14,7 +14,7 @@ from .psub_functions.treasury_market_operations import (p_real_bid_capacity_cush
                                                         p_real_bid_capacity_totals, p_real_ask_capacity_totals, s_bid_capacity, s_ask_capacity,
                                                         p_effective_bid_capacity_changes_totals, p_effective_ask_capacity_changes_totals, s_bid_change_ohm, s_bid_change_usd, s_ask_change_ohm, s_ask_change_usd,
                                                         )
-from .psub_functions.ohmbond import p_bond_create, s_bond_create, s_bond_created_today, s_ohm_bonded, s_bond_expire, p_bond_sell, s_liq_ohm_into_bond
+from .psub_functions.ohmbond import p_bond_create, s_bond_create, s_bond_created_today, s_ohm_bonded, s_bond_expire,s_ohm_bonded_after_release,s_netflow_bondexpire,p_bond_expire, p_bond_sell, s_liq_ohm_into_bond,s_cum_ohm_minted_forbond,s_cum_ohm_burned_frombond,s_netflow_bondsale
 
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
@@ -31,6 +31,7 @@ meta_block = {'policies': {
         'demand_factor': s_list_params("demand_factor"),
         'supply_factor': s_list_params("supply_factor"),
         'bond_annual_discount_rate': s_list_params("bond_annual_discount_rate"),
+        'ohm_bond_to_netflow_ratio':s_list_params("ohm_bond_to_netflow_ratio")
 }}
 
 reward_rate_block = {'policies': {
@@ -130,7 +131,9 @@ bond_creation_block = {
     'variables': {
         'bond_created': s_bond_create,
         'bond_created_today': s_bond_created_today,
-        'ohm_bonded': s_ohm_bonded
+        'ohm_bonded': s_ohm_bonded,
+        'cum_ohm_minted_forbond':s_cum_ohm_minted_forbond,
+        
     }
 }
 
@@ -139,16 +142,20 @@ bond_sell_block = {
         'bond_sell': p_bond_sell
     },
     'variables': {
-        'liq_ohm_into_bond': s_liq_ohm_into_bond
+        'cum_ohm_burned_frombond':s_cum_ohm_burned_frombond,
+        'netflow_bondsale':s_netflow_bondsale
     }
 }
 
 bond_expiration_block = {
     'policies': {
+        'bond_expired':p_bond_expire
 
     },
     'variables': {
-        'ohm_released': s_bond_expire
+        'ohm_released': s_bond_expire,
+        'ohm_bonded':s_ohm_bonded_after_release, # not sure: is this the best way to update this variable for the second time in a step?
+        'netflow_bondexpire':s_netflow_bondexpire
     }
 }
 # ---system----

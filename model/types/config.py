@@ -19,7 +19,8 @@ StateType = TypedDict('StateType', {
                       'ask_change_ohm':OHM,
                       'bid_change_ohm':OHM,
                       'market_demand_supply': MarketDemandSupply,
-                      "net_flow": USD})
+                      "net_flow": USD,
+                      'amm_k':float,})
 ParamsType = TypedDict('ParamsType', {
                         'target_ma':day,
                         'demand_factor': PlaceholderTypeDemandSupply, 'supply_factor': PlaceholderTypeDemandSupply,
