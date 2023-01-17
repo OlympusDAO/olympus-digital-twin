@@ -24,5 +24,6 @@ default_params1 = {"demand_factor": [.07],
                    "with_reinstate_window": ['Yes'],
                    "bond_create_schedule": [generate_ohmbond(amounts=[[1e6]*3], exp_durs=[[30, 60, 90]])],
                    "bond_annual_discount_rate": [.04],
-                   "ohm_bond_to_netflow_ratio":[0.5] #should be between 0 and 1
+                   "ohm_bond_to_netflow_ratio":[0.5], #should be between 0 and 1
+                   "liq_stables_safety_ratio":[0.8],#should be between 0 and 1. bigger it is, more drainage of liquidity it will allow
                    }

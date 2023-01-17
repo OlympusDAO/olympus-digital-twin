@@ -23,10 +23,13 @@ def p_reserves_in(params, substep, state_history, state) -> dict:
         reserves_in = 0
     return {'reserves_in': reserves_in}
 
+def treasury_liq_safety_check(liq_stables_prior,net_flow_bondexpire,safetyratio):
+    assert (liq_stables_prior+net_flow_bondexpire) > (safetyratio*liq_stables_prior), f"the amount of netflow caused by ohm bond expiration exceeds {safetyratio}*liq_stables, may cause excessive drainage of the liquidity pool"
 
 def treasury_liquidity_policy(liq_stables_prior, net_flow, net_flow_bondsale, net_flow_bondexpire, reserves_in, bid_change_usd, ask_change_usd, amm_k):
-    liq_stables = max(liq_stables_prior + net_flow + net_flow_bondsale + net_flow_bondexpire -
-                      reserves_in + bid_change_usd - ask_change_usd, 0)
+    
+    liq_stables = liq_stables_prior + net_flow + net_flow_bondsale + net_flow_bondexpire - reserves_in + bid_change_usd - ask_change_usd
+    assert liq_stables>0, "liq_stables below 0, the whole pool drained."
     # ensure that if liq_stables is 0 then liq_ohm is 0 as well
     liq_ohm = liq_stables and amm_k / liq_stables or 0
     # ensure that if liq_ohm is 0 then price is 0 as well

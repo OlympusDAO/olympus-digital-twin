@@ -1,4 +1,4 @@
-from ..policy.treasury import treasury_liquidity_policy, treasury_reserves_policy
+from ..policy.treasury import treasury_liquidity_policy, treasury_reserves_policy, treasury_liq_safety_check
 
 
 def p_treasury(params, substep, state_history, state) -> dict:
@@ -18,6 +18,8 @@ def p_treasury(params, substep, state_history, state) -> dict:
     cum_ohm_minted_prior = prev_day["cum_ohm_minted"]
     bid_change_ohm = state["bid_change_ohm"]
     ask_change_ohm = state["ask_change_ohm"]
+
+    liq_safety_check = treasury_liq_safety_check(liq_stables_prior,net_flow_bondexpire,params['liq_stables_safety_ratio'])
 
     liq_stables, liq_ohm, price = treasury_liquidity_policy(
         liq_stables_prior, net_flow, net_flow_bondsale, net_flow_bondexpire, reserves_in, bid_change_usd, ask_change_usd, amm_k)
