@@ -11,3 +11,4 @@ def generate_ohmbond(amounts=[[1e6]],exp_durs=[[30]],start_days=[1]):
             bonds_today.append(bond)
         allbonds['bonds'].append( bonds_today)
     return pd.DataFrame(allbonds)
+
