@@ -41,6 +41,8 @@ $ pip3 install cadcad==0.4.28
 $ pip3 install -r requirements.txt
 ```
 
-## Running a Simple Example
+## Running a Example
 
-You can see a simple example of how to use the model in Example.ipynb.
+You can see a simple example of how to use the model with just one set of parameters in "Single Example.ipynb".
+
+You can see an example of how to run parameter sweeps in "Sweep Example.ipynb"
