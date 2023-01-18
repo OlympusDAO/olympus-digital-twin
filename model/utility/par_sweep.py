@@ -1,5 +1,6 @@
 from itertools import product
 from copy import deepcopy
+from model.types.config import ParamsType
 
 
 def create_par_sweep(sweep_dict: dict) -> dict:
@@ -25,3 +26,20 @@ def create_par_sweep(sweep_dict: dict) -> dict:
         sweep_dict[varname] = [x[kk] for x in sweeps]
 
     return sweep_dict
+
+
+def create_par_sweep_and_apply(sweep_dict: dict, params: ParamsType) -> None:
+    """Create the cartesian parameter sweep dictionary and then overwrite the values
+    for params
+
+    Args:
+        sweep_dict (dict): A dictionary of params and values to sweep over
+        params (ParamsType): The parameters of the system
+    """
+
+    # Get the param sweep
+    sweep_dict = create_par_sweep(sweep_dict)
+
+    # Update params
+    for key in sweep_dict.keys():
+        params[key] = sweep_dict[key]
