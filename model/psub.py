@@ -31,7 +31,8 @@ meta_block = {'policies': {
         'demand_factor': s_list_params("demand_factor"),
         'supply_factor': s_list_params("supply_factor"),
         'bond_annual_discount_rate': s_list_params("bond_annual_discount_rate"),
-        'ohm_bond_to_netflow_ratio':s_list_params("ohm_bond_to_netflow_ratio")
+        'ohm_bond_to_netflow_ratio':s_list_params("ohm_bond_to_netflow_ratio"),
+        'bond_create_schedule':s_list_params("bond_create_schedule"),
 }}
 
 reward_rate_block = {'policies': {
