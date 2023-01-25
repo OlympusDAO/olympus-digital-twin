@@ -33,7 +33,7 @@ default_params1 = {"demand_factor": [.07],
                    }
 
 default_params_soros = {"demand_factor": [.03],
-                        "supply_factor": [-.03],
+                        "supply_factor": [-.04],
                         "initial_reserves_volatile": [25000000],
                         # LiquidityUSD : reservesUSD ratio --> 1:1 = 0.5
                         "max_liq_ratio": [0.14375],
