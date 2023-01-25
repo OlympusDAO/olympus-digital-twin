@@ -89,6 +89,6 @@ default_initial_soros = {  # variable values borrowed from liquidity-olympus/sim
     "cum_ohm_minted_forbond": 0,
     'cum_ohm_burned_frombond': 0,
     "netflow_bondexpire": 0,
-    "netflow_bondsale": 0
-
+    "netflow_bondsale": 0,
+    "whale_flow": 0
 }

@@ -23,7 +23,7 @@ from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_pr
 from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
 from .policy.utility import p_list_params
 from .psub_functions.utility import s_list_params
-from .psub_functions.soros import p_soros_whale, s_soros_whale
+from .psub_functions.soros import p_soros_whale, s_soros_whale, s_soros_whale_flow
 
 meta_block = {'policies': {
     'params': p_list_params
@@ -273,7 +273,8 @@ soros_whale_block = {
         'soros_whale': p_soros_whale
     },
     'variables': {
-        'net_flow': s_soros_whale
+        'net_flow': s_soros_whale,
+        'whale_flow': s_soros_whale_flow
     }
 }
 
