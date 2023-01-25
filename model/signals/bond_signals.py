@@ -10,7 +10,7 @@ def total_value_bond_creation(start_dates,simulation_timesteps:day, bond_tenors,
         simulation_timesteps (day): The number of timesteps the simulation has. The starting dates should not exceed total simulation time step
         bond_tenors (day, or List[day]): The tenors for the bonds to create. The tenors can all be the same or different (specified by a list of numbers). If both bond_tenors and start_dates are List, they should have equal length.
         total_face_value (OHM): The total face value of all bonds cated.
-        bond_value_distribution (list): the ratio of face value between all the bonds. empty list means 
+        bond_value_distribution (list): the ratio of face value between all the bonds. empty list means the total value is evenly distributed across all bonds
         
 
     Returns:
@@ -41,19 +41,6 @@ def total_value_bond_creation(start_dates,simulation_timesteps:day, bond_tenors,
         else: # only one bond
             bonds = generate_ohmbond(amounts=[[total_face_value]],exp_durs=[[bond_tenors]], start_days=[start_dates])
     
-    return bonds
-
-
-    # The face values that the bonds will have
-    face_value_temp = [[face_value] * len(bond_tenors)] * len(start_times)
-
-    # The tenors that the bonds will have
-    bond_tenors_temp = [bond_tenors] * len(start_times)
-
-    # Generate the bonds
-    bonds = generate_ohmbond(amounts=face_value_temp,
-                             exp_durs=bond_tenors_temp, start_days=start_times)
-
     return bonds
 
 
