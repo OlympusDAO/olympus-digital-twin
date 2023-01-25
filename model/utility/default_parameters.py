@@ -32,8 +32,8 @@ default_params1 = {"demand_factor": [.07],
                    "liq_stables_safety_ratio": [0.8],
                    }
 
-default_params_soros = {"demand_factor": [.07],
-                        "supply_factor": [-.07],
+default_params_soros = {"demand_factor": [.03],
+                        "supply_factor": [-.03],
                         "initial_reserves_volatile": [25000000],
                         # LiquidityUSD : reservesUSD ratio --> 1:1 = 0.5
                         "max_liq_ratio": [0.14375],
@@ -61,6 +61,6 @@ default_params_soros = {"demand_factor": [.07],
                         "ohm_bond_to_netflow_ratio": [0.5],
                         # should be between 0 and 1. bigger it is, more drainage of liquidity it will allow
                         "liq_stables_safety_ratio": [0.8],
-                        "soros_short_amount": [0, 10000],
+                        "soros_short_amount": [0, 10000000],
                         "soros_short_timing": [None, 50]
                         }
