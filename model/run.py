@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from .psub import psub_blocks
+from .psub import psub_blocks, psub_blocks_soros
 from cadCAD.engine import ExecutionMode, ExecutionContext, Executor
 from cadCAD import configs
 from cadCAD.configuration.utils import config_sim
@@ -8,18 +8,24 @@ from cadCAD.configuration import Experiment
 from copy import deepcopy
 
 
-def load_config(monte_carlo_runs: int, params, initial_state, t):
+def load_config(monte_carlo_runs: int, params, initial_state, t, psub_scenario_option=None):
     sim_config = config_sim({
         'N': monte_carlo_runs,  # number of monte carlo runs
         'T': list(range(t)),  # number of timesteps
         'M': params             # simulation parameters
     })
 
+    # Switch to special sets of psubs
+    if psub_scenario_option == "Soros":
+        blocks = psub_blocks_soros
+    else:
+        blocks = psub_blocks
+
     exp = Experiment()
     exp.append_configs(
         sim_configs=sim_config,
         initial_state=initial_state,
-        partial_state_update_blocks=psub_blocks
+        partial_state_update_blocks=blocks
     )
     return exp
 
@@ -66,7 +72,7 @@ def post_processing(raw) -> pd.DataFrame:
         str) + "-" + df["subset"].astype(str) + "-" + df["run"].astype(str)
 
     # Backfill parameter values
-    df[["demand_factor", "supply_factor", "bond_annual_discount_rate","ohm_bond_to_netflow_ratio"]] = df[[
-        "demand_factor", "supply_factor", "bond_annual_discount_rate","ohm_bond_to_netflow_ratio"]].fillna(method="bfill")
+    df[["demand_factor", "supply_factor", "bond_annual_discount_rate", "ohm_bond_to_netflow_ratio"]] = df[[
+        "demand_factor", "supply_factor", "bond_annual_discount_rate", "ohm_bond_to_netflow_ratio"]].fillna(method="bfill")
 
     return df
