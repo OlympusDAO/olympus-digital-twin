@@ -10,3 +10,7 @@ def p_soros_whale(_params, substep, state_history, state) -> dict:
 
 def s_soros_whale(_params, substep, state_history, state, _input) -> tuple:
     return ("net_flow", state["net_flow"] - _input["whale_short"])
+
+
+def s_soros_whale_flow(_params, substep, state_history, state, _input) -> tuple:
+    return ("whale_flow", _input["whale_short"])
