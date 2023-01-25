@@ -5,4 +5,5 @@ def p_list_params(params, substep, state_history, state) -> dict:
     return {"demand_factor": params["demand_factor"],
             "supply_factor": params["supply_factor"],
             "bond_annual_discount_rate": params["bond_annual_discount_rate"],
-            "ohm_bond_to_netflow_ratio":params["ohm_bond_to_netflow_ratio"],}
+            "ohm_bond_to_netflow_ratio":params["ohm_bond_to_netflow_ratio"],
+            'bond_schedule_name':params["bond_schedule_name"]}
