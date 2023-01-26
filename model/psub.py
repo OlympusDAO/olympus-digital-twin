@@ -23,7 +23,7 @@ from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_pr
 from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
 from .policy.utility import p_list_params
 from .psub_functions.utility import s_list_params
-from .psub_functions.soros import p_soros_whale, s_soros_whale, s_soros_whale_flow
+from .psub_functions.soros import p_soros_whale, s_soros_whale, s_soros_whale_flow, p_soros_revenue, s_soros_revenue
 
 meta_block = {'policies': {
     'params': p_list_params
@@ -278,6 +278,13 @@ soros_whale_block = {
     }
 }
 
+soros_revenue_block = {'policies': {
+    'soros_revenue': p_soros_revenue
+},
+    'variables': {
+        'soros_revenue': s_soros_revenue,
+}}
+
 
 psub_blocks = [meta_block, treasury_stables_block, liq_backing_block, reward_rate_block, bond_creation_block, bond_sell_block, bond_expiration_block, supply_block, reserves_in_block, amm_k_block,
                price_target_block1, price_target_block2, target_walls_block, cushions_block,
@@ -291,3 +298,5 @@ psub_blocks_soros = psub_blocks[:]
 
 psub_blocks_soros.insert(psub_blocks_soros.index(
     demand_block) + 1, soros_whale_block)
+
+psub_blocks_soros.append(soros_revenue_block)

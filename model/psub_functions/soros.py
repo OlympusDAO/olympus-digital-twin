@@ -13,4 +13,14 @@ def s_soros_whale(_params, substep, state_history, state, _input) -> tuple:
 
 
 def s_soros_whale_flow(_params, substep, state_history, state, _input) -> tuple:
-    return ("whale_flow", _input["whale_short"])
+    return ("whale_flow", -_input["whale_short"])
+
+
+def p_soros_revenue(_params, substep, state_history, state) -> dict:
+    soros_revenue = 0
+    print("A")
+    return {"soros_revenue": soros_revenue}
+
+
+def s_soros_revenue(_params, substep, state_history, state, _input) -> tuple:
+    return ("soros_revenue", _input["soros_revenue"])
