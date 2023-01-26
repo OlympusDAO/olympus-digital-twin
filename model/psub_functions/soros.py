@@ -13,12 +13,16 @@ def s_soros_whale(_params, substep, state_history, state, _input) -> tuple:
 
 
 def s_soros_whale_flow(_params, substep, state_history, state, _input) -> tuple:
-    return ("whale_flow", -_input["whale_short"])
+    return ("whale_flow", _input["whale_short"])
 
 
 def p_soros_revenue(_params, substep, state_history, state) -> dict:
-    soros_revenue = 0
-    print("A")
+    # Flow * midpoint of price = revenue
+    start_price = state_history[-1][0]["price"]
+    end_price = state["price"]
+    midpoint_price = (start_price + end_price) / 2
+    soros_revenue = midpoint_price * state["whale_flow"]
+
     return {"soros_revenue": soros_revenue}
 
 
