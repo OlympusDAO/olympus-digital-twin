@@ -2,7 +2,7 @@ from typing import List
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 import numpy as np
-
+from .ohmbond_metrics import get_price_standard_deviation
 
 def plot_all_sims(var_list: List[str], df: DataFrame):
     for col in var_list:
@@ -37,3 +37,13 @@ def plot_multivars_grouped_average(var_list: list[str], grouping_variables: list
         ax.set_title(titlestr[:-2])
     fig.show()
     return fig
+
+
+def plot_price_standard_deviation(df:DataFrame):
+    # TODO: allow different ways to group simulations (now it's based on bond_schedule)
+    av_std,std_of_std = get_price_standard_deviation(df)
+    plt.bar(x=np.arange(len(av_std)),height=av_std)
+    plt.errorbar(x=np.arange(len(av_std)),y=av_std,yerr=std_of_std,color='k')
+    plt.xticks(ticks=np.arange(len(av_std)),labels=df['bond_schedule_name'].dropna().unique(),rotation=45)
+    plt.ylabel('average standard deviation in the run')
+    plt.show()
