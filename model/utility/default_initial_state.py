@@ -1,6 +1,7 @@
 from model.types import MarketDemandSupply
 
 default_initial_state1 = {  # variable values borrowed from liquidity-olympus/simulation.ipynb
+    "day":0,
     "liq_stables": 21000000,
     "reserves_stables": 170000000,
     "reserves_volatile": 25000000,
