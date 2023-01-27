@@ -14,7 +14,7 @@ from .psub_functions.treasury_market_operations import (p_real_bid_capacity_cush
                                                         p_real_bid_capacity_totals, p_real_ask_capacity_totals, s_bid_capacity, s_ask_capacity,
                                                         p_effective_bid_capacity_changes_totals, p_effective_ask_capacity_changes_totals, s_bid_change_ohm, s_bid_change_usd, s_ask_change_ohm, s_ask_change_usd,
                                                         )
-from .psub_functions.ohmbond import p_bond_create, s_bond_create, s_bond_created_today, s_ohm_bonded, s_bond_expire,s_ohm_bonded_after_release,s_netflow_bondexpire,p_bond_expire, p_bond_sell, s_liq_ohm_into_bond,s_cum_ohm_minted_forbond,s_cum_ohm_burned_frombond,s_netflow_bondsale
+from .psub_functions.ohmbond import p_bond_create, s_bond_create, s_bond_created_today, s_ohm_bonded, s_bond_expire, s_ohm_bonded_after_release, s_netflow_bondexpire, p_bond_expire, p_bond_sell, s_liq_ohm_into_bond, s_cum_ohm_minted_forbond, s_cum_ohm_burned_frombond, s_netflow_bondsale
 
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
@@ -23,6 +23,7 @@ from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_pr
 from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
 from .policy.utility import p_list_params
 from .psub_functions.utility import s_list_params
+from .psub_functions.soros import p_soros_whale, s_soros_whale, s_soros_whale_flow, p_soros_revenue, s_soros_revenue
 
 meta_block = {'policies': {
     'params': p_list_params
@@ -31,8 +32,8 @@ meta_block = {'policies': {
         'demand_factor': s_list_params("demand_factor"),
         'supply_factor': s_list_params("supply_factor"),
         'bond_annual_discount_rate': s_list_params("bond_annual_discount_rate"),
-        'ohm_bond_to_netflow_ratio':s_list_params("ohm_bond_to_netflow_ratio"),
-        'bond_schedule_name':s_list_params("bond_schedule_name"),
+        'ohm_bond_to_netflow_ratio': s_list_params("ohm_bond_to_netflow_ratio"),
+        'bond_schedule_name': s_list_params("bond_schedule_name"),
 }}
 
 reward_rate_block = {'policies': {
@@ -133,8 +134,8 @@ bond_creation_block = {
         'bond_created': s_bond_create,
         'bond_created_today': s_bond_created_today,
         'ohm_bonded': s_ohm_bonded,
-        'cum_ohm_minted_forbond':s_cum_ohm_minted_forbond,
-        
+        'cum_ohm_minted_forbond': s_cum_ohm_minted_forbond,
+
     }
 }
 
@@ -143,20 +144,21 @@ bond_sell_block = {
         'bond_sell': p_bond_sell
     },
     'variables': {
-        'cum_ohm_burned_frombond':s_cum_ohm_burned_frombond,
-        'netflow_bondsale':s_netflow_bondsale
+        'cum_ohm_burned_frombond': s_cum_ohm_burned_frombond,
+        'netflow_bondsale': s_netflow_bondsale
     }
 }
 
 bond_expiration_block = {
     'policies': {
-        'bond_expired':p_bond_expire
+        'bond_expired': p_bond_expire
 
     },
     'variables': {
         'ohm_released': s_bond_expire,
-        'ohm_bonded':s_ohm_bonded_after_release, # not sure: is this the best way to update this variable for the second time in a step?
-        'netflow_bondexpire':s_netflow_bondexpire
+        # not sure: is this the best way to update this variable for the second time in a step?
+        'ohm_bonded': s_ohm_bonded_after_release,
+        'netflow_bondexpire': s_netflow_bondexpire
     }
 }
 # ---system----
@@ -266,9 +268,35 @@ protocol_block = {
 }
 
 
+soros_whale_block = {
+    'policies': {
+        'soros_whale': p_soros_whale
+    },
+    'variables': {
+        'net_flow': s_soros_whale,
+        'whale_flow': s_soros_whale_flow
+    }
+}
+
+soros_revenue_block = {'policies': {
+    'soros_revenue': p_soros_revenue
+},
+    'variables': {
+        'soros_revenue': s_soros_revenue,
+}}
+
+
 psub_blocks = [meta_block, treasury_stables_block, liq_backing_block, reward_rate_block, bond_creation_block, bond_sell_block, bond_expiration_block, supply_block, reserves_in_block, amm_k_block,
                price_target_block1, price_target_block2, target_walls_block, cushions_block,
                reinstate_counter_block, demand_block, target_capacities_block, real_capacity_cushion_block,
                effective_capacity_cushion_block, real_capacity_totals_block, effective_capacity_changes_totals_block,
                treasury_block,
                price_history_block, protocol_block]
+
+
+psub_blocks_soros = psub_blocks[:]
+
+psub_blocks_soros.insert(psub_blocks_soros.index(
+    demand_block) + 1, soros_whale_block)
+
+psub_blocks_soros.append(soros_revenue_block)
