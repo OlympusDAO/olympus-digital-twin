@@ -41,9 +41,26 @@ def plot_multivars_grouped_average(var_list: list[str], grouping_variables: list
 
 def plot_price_standard_deviation(df:DataFrame):
     # TODO: allow different ways to group simulations (now it's based on bond_schedule)
-    av_std,std_of_std = get_price_standard_deviation(df)
+    av_std,se_of_std = get_price_standard_deviation(df)
     plt.bar(x=np.arange(len(av_std)),height=av_std)
-    plt.errorbar(x=np.arange(len(av_std)),y=av_std,yerr=std_of_std,color='k')
+    plt.errorbar(x=np.arange(len(av_std)),y=av_std,yerr=se_of_std,color='k')
     plt.xticks(ticks=np.arange(len(av_std)),labels=df['bond_schedule_name'].dropna().unique(),rotation=45)
     plt.ylabel('average standard deviation in the run')
     plt.show()
+
+def plot_price_standard_deviation_multiple_exps(exps:List[dict]):
+    # TODO: allow different ways to group simulations (now it's based on bond_schedule)
+    means = {}
+    ses = {}
+    for exp in exps:
+        df = exp['df']
+        exp_label = exp['label']
+        av_std,se_of_std = get_price_standard_deviation(df)
+        means[exp_label]=av_std
+        ses[exp_label]=se_of_std
+    means_df = DataFrame(means,index = df['bond_schedule_name'].dropna().unique())
+    ses_df = DataFrame(ses_df,index = df['bond_schedule_name'].dropna().unique())
+
+    fig, ax = plt.subplots()
+    means_df.plot.bar(yerr=ses_df, ax=ax, capsize=4, rot=45)
+    fig.show()

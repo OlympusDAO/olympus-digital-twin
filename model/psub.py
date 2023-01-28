@@ -293,7 +293,8 @@ psub_blocks = [meta_block, treasury_stables_block, liq_backing_block, reward_rat
                treasury_block,
                price_history_block, protocol_block]
 
-
+psub_blocks_noRBS =  [meta_block, treasury_stables_block, liq_backing_block, reward_rate_block, bond_creation_block, bond_sell_block, bond_expiration_block, 
+                supply_block, reserves_in_block, amm_k_block,demand_block,treasury_block, price_history_block, protocol_block]
 psub_blocks_soros = psub_blocks[:]
 
 psub_blocks_soros.insert(psub_blocks_soros.index(
