@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from .psub import psub_blocks, psub_blocks_soros
+from .psub import psub_blocks, psub_blocks_soros,psub_blocks_noRBS
 from cadCAD.engine import ExecutionMode, ExecutionContext, Executor
 from cadCAD import configs
 from cadCAD.configuration.utils import config_sim
@@ -18,6 +18,8 @@ def load_config(monte_carlo_runs: int, params, initial_state, t, psub_scenario_o
     # Switch to special sets of psubs
     if psub_scenario_option == "Soros":
         blocks = psub_blocks_soros
+    elif psub_scenario_option == "NoRBS":
+        blocks = psub_blocks_noRBS
     else:
         blocks = psub_blocks
 
