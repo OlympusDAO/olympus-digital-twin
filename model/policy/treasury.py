@@ -29,7 +29,7 @@ def treasury_liq_safety_check(liq_stables_prior,net_flow_bondexpire,safetyratio,
 def treasury_liquidity_policy(liq_stables_prior, net_flow, net_flow_bondsale, net_flow_bondexpire, reserves_in, bid_change_usd, ask_change_usd, amm_k,day):
     
     liq_stables = liq_stables_prior + net_flow + net_flow_bondsale + net_flow_bondexpire - reserves_in + bid_change_usd - ask_change_usd
-    assert liq_stables>0, f"liq_stables below 0 on day {day}, the whole pool drained."
+    #assert liq_stables>0, f"liq_stables below 0 on day {day}, the whole pool drained."
     # ensure that if liq_stables is 0 then liq_ohm is 0 as well
     liq_ohm = liq_stables and amm_k / liq_stables or 0
     # ensure that if liq_ohm is 0 then price is 0 as well

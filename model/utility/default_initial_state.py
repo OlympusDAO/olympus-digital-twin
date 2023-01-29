@@ -43,7 +43,10 @@ default_initial_state1 = {  # variable values borrowed from liquidity-olympus/si
     "cum_ohm_minted_forbond": 0,
     'cum_ohm_burned_frombond': 0,
     "netflow_bondexpire": 0,
-    "netflow_bondsale": 0
+    "netflow_bondsale": 0,
+
+    # run pipeline control
+    "interrupt":False,
 
 }
 
@@ -91,5 +94,6 @@ default_initial_soros = {  # variable values borrowed from liquidity-olympus/sim
     "netflow_bondexpire": 0,
     "netflow_bondsale": 0,
     "whale_flow": 0,
-    "soros_revenue": 0
+    "soros_revenue": 0,
+    
 }
