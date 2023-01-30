@@ -2,7 +2,7 @@ from typing import List
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 import numpy as np
-
+from .ohmbond_metrics import get_price_standard_deviation
 
 def plot_all_sims(var_list: List[str], df: DataFrame):
     for col in var_list:
@@ -37,3 +37,53 @@ def plot_multivars_grouped_average(var_list: list[str], grouping_variables: list
         ax.set_title(titlestr[:-2])
     fig.show()
     return fig
+
+
+def plot_price_standard_deviation(df:DataFrame):
+    # TODO: allow different ways to group simulations (now it's based on bond_schedule)
+    av_std,se_of_std = get_price_standard_deviation(df)
+    plt.bar(x=np.arange(len(av_std)),height=av_std)
+    plt.errorbar(x=np.arange(len(av_std)),y=av_std,yerr=se_of_std,color='k')
+    plt.xticks(ticks=np.arange(len(av_std)),labels=df['bond_schedule_name'].dropna().unique(),rotation=45)
+    plt.ylabel('average standard deviation in the run')
+    plt.show()
+
+def plot_price_standard_deviation_multiple_exps(exps:List[dict]):
+    # TODO: allow different ways to group simulations (now it's based on bond_schedule)
+    means = {}
+    ses = {}
+    for exp in exps:
+        df = exp['df']
+        exp_label = exp['label']
+        av_std,se_of_std = get_price_standard_deviation(df)
+        means[exp_label]=av_std
+        ses[exp_label]=se_of_std
+    means_df = DataFrame(means,index = df['bond_schedule_name'].dropna().unique())
+    ses_df = DataFrame(ses,index = df['bond_schedule_name'].dropna().unique())
+
+    fig, ax = plt.subplots()
+    means_df.plot.bar(yerr=ses_df, ax=ax, capsize=4, rot=-45)
+    fig.show()
+
+def get_interruption_rate(df,totalstep:int)-> DataFrame:
+    maxstep = df.groupby([ "subset","run"]).timestep.max()
+    r_interrupt = (maxstep<totalstep).groupby("subset").mean()
+    return r_interrupt
+def plot_simu_interruption_rate(df,number_steps:int):
+    interrupt_rate = get_interruption_rate(df,number_steps)
+    print(interrupt_rate)
+    plt.bar(np.arange(len(interrupt_rate)),interrupt_rate)
+    plt.xticks(ticks=np.arange(len(interrupt_rate)),labels=df['bond_schedule_name'].dropna().unique(),rotation=-45)
+    plt.ylabel('average rate of a run unfinished')
+    plt.show()
+def plot_simu_interruption_rate_multiple_exps(exps:List[dict],number_steps:int):
+    all_r_interrupt = {}
+    for exp in exps:
+        df = exp['df']
+        exp_label = exp['label']
+        interrupt_rate = get_interruption_rate(df,number_steps)
+        all_r_interrupt[exp_label] = np.array(interrupt_rate)
+    all_r_interrupt_df = DataFrame(all_r_interrupt,index = df['bond_schedule_name'].dropna().unique())
+    fig, ax = plt.subplots()
+    all_r_interrupt_df.plot.bar(ax=ax, capsize=4, rot=-45)
+    fig.show()
