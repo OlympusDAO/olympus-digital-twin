@@ -4,9 +4,6 @@ def p_target_capacity(_params, substep, state_history, state) -> dict:
     out["bid_capacity_target"] = _params["bid_factor"] * \
         prior_day["reserves_stables"]
 
-    out["bid_capacity_target"] = _params["bid_factor"] * \
-        prior_day["reserves_stables"]
-
     out["ask_capacity_target"] = prior_day["upper_target_wall"] and _params["ask_factor"] * \
         prior_day["reserves_stables"] * \
         (1 + 2 * _params["upper_wall"]) / \
