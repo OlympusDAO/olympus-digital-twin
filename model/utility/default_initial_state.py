@@ -1,7 +1,7 @@
 from model.types import MarketDemandSupply
 
 default_initial_state1 = {  # variable values borrowed from liquidity-olympus/simulation.ipynb
-    "day":0,
+    "day": 0,
     "liq_stables": 21000000,
     "reserves_stables": 170000000,
     "reserves_volatile": 25000000,
@@ -46,7 +46,7 @@ default_initial_state1 = {  # variable values borrowed from liquidity-olympus/si
     "netflow_bondsale": 0,
 
     # run pipeline control
-    "interrupt":False,
+    "interrupt": False,
 
 }
 
@@ -93,7 +93,10 @@ default_initial_soros = {  # variable values borrowed from liquidity-olympus/sim
     'cum_ohm_burned_frombond': 0,
     "netflow_bondexpire": 0,
     "netflow_bondsale": 0,
+    # run pipeline control
+    "interrupt": False,
+
     "whale_flow": 0,
     "soros_revenue": 0,
-    
+
 }
