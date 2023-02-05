@@ -69,11 +69,12 @@ def get_interruption_rate(df,totalstep:int)-> DataFrame:
     maxstep = df.groupby([ "subset","run"]).timestep.max()
     r_interrupt = (maxstep<totalstep).groupby("subset").mean()
     return r_interrupt
-def plot_simu_interruption_rate(df,number_steps:int):
+def plot_simu_interruption_rate(df,number_steps:int,labels=[]):
+    if len(labels)==0:
+        labels = df['bond_schedule_name'].dropna().unique()
     interrupt_rate = get_interruption_rate(df,number_steps)
-    print(interrupt_rate)
     plt.bar(np.arange(len(interrupt_rate)),interrupt_rate)
-    plt.xticks(ticks=np.arange(len(interrupt_rate)),labels=df['bond_schedule_name'].dropna().unique(),rotation=-45)
+    plt.xticks(ticks=np.arange(len(interrupt_rate)),labels=labels,rotation=-45)
     plt.ylabel('average rate of a run unfinished')
     plt.show()
 def plot_simu_interruption_rate_multiple_exps(exps:List[dict],number_steps:int):

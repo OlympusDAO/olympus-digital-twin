@@ -31,6 +31,7 @@ default_params1 = {"demand_factor": [.07],
                    # should be between 0 and 1. bigger it is, more drainage of liquidity it will allow
                    "liq_stables_safety_ratio": [0.8],
                    'panic_sell_on':[False],
+                   'panic_param':[0.4]
                    }
 
 default_params_soros = {"demand_factor": [.03],

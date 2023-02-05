@@ -34,6 +34,8 @@ meta_block = {'policies': {
         'bond_annual_discount_rate': s_list_params("bond_annual_discount_rate"),
         'ohm_bond_to_netflow_ratio': s_list_params("ohm_bond_to_netflow_ratio"),
         'bond_schedule_name': s_list_params("bond_schedule_name"),
+        'panic_sell_on':s_list_params("panic_sell_on"),
+        'panic_param':s_list_params("panic_param")
 }}
 
 reward_rate_block = {'policies': {

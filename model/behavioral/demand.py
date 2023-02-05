@@ -33,7 +33,7 @@ def market_demand_behavioral(state: StateType, params: ParamsType):
             price_change=0
         else:
             price_change = state['price_history'][-1] - state['price_history'][-2]
-        net_flow += panic_sell_amount(price_change,liq_stables) # panic selling ohm => increase of stables
+        net_flow -= panic_sell_amount(price_change,liq_stables,params['panic_param']) # panic selling ohm => decrease of stables in the pool
 
         
 
