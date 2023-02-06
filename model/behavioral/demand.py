@@ -2,23 +2,22 @@ import random
 from ..types import StateType, ParamsType
 
 import numpy as np
-def panic_sell_amount(price_change,liq_stables,k=0.1,sigma=.05):
-    # given the price change, how much sell will happen
-    # k is the factor adjusting the curve shape, ranging (0,+inf)
-    # TODO: in the future, allow different shapes of this curve (e.g. sigmoid)
+def panic_sell_amount(price_change,liq_ohm,L=1,k=1,p0=3):
+    # given the price change, how much sell will happen. right now it's governed by a logistic function
+    # L is the scaling magnitude controller, ranging (0,+inf). higher L => higher ceiling
+    # k is the factor adjusting the curve shape, ranging (0,+inf). bigger k => sharper increase of the sell amount
+    # p0 is the turning point when the sell amount increases the fastest
+
+    # TODO: in the future, allow different shapes of this curve 
     if price_change>=0:
         return 0
     else:
-        amount = liq_stables*(1-np.exp(-k*np.abs(price_change)))
-        # turn it into log normal distribution
-        mu  = np.log(amount) + sigma ** 2 # so the mode for this random distribution is 
-        rng = np.random.default_rng()
-        randamount = rng.lognormal(mu, sigma, 1)[0]
-        #randamount = np.random.lognormal(mu,sigma)
-        if randamount > liq_stables:
-            randamount = liq_stables
+        max_amount = liq_ohm*(L/(1+np.exp(-k*(np.abs(price_change)-p0)))) # the max amount of sell given the price change is determined by a logistic function
+        # turn it into a uniform distribution for each instance to introduce more randomness
+        randamount = (np.random.rand()*.8+.2)*max_amount # ranging between 0.2 to 1 times of the max_amount
+        if randamount > liq_ohm:
+            randamount = liq_ohm
         return randamount
-
 def market_demand_behavioral(state: StateType, params: ParamsType):
     # net_flow = random.uniform(state["treasury_stables"] * state["market_demand_supply"].total_supply,
     #                           state["treasury_stables"] * state["market_demand_supply"].total_demand)
