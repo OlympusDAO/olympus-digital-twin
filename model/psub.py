@@ -22,8 +22,8 @@ from .policy.treasury import p_reserves_in
 from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_price_target, s_upper_target_wall, s_lower_target_wall, s_lower_target_cushion, s_upper_target_cushion, s_bid_counter, s_ask_counter
 from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
 from .policy.utility import p_list_params
-from .psub_functions.utility import s_list_params,s_interrupt
-from .psub_functions.soros import p_soros_whale, s_soros_whale, s_soros_whale_flow, p_soros_revenue, s_soros_revenue
+from .psub_functions.utility import s_list_params, s_interrupt
+from .psub_functions.soros import p_soros_whale, s_soros_whale, s_soros_whale_flow, p_soros_revenue, s_soros_revenue, p_soros_whale_reaction, s_soros_whale_reaction
 
 meta_block = {'policies': {
     'params': p_list_params
@@ -268,9 +268,9 @@ protocol_block = {
 }
 
 interrupt_block = {
-    'policies':{},
-    'variables':{
-        'interrupt':s_interrupt
+    'policies': {},
+    'variables': {
+        'interrupt': s_interrupt
     }
 }
 soros_whale_block = {
@@ -280,6 +280,15 @@ soros_whale_block = {
     'variables': {
         'net_flow': s_soros_whale,
         'whale_flow': s_soros_whale_flow
+    }
+}
+
+soros_whale_reaction_block = {
+    'policies': {
+        'soros_whale_reaction': p_soros_whale_reaction
+    },
+    'variables': {
+        'net_flow': s_soros_whale_reaction,
     }
 }
 
@@ -295,14 +304,18 @@ psub_blocks = [meta_block, treasury_stables_block, liq_backing_block, reward_rat
                price_target_block1, price_target_block2, target_walls_block, cushions_block,
                reinstate_counter_block, demand_block, target_capacities_block, real_capacity_cushion_block,
                effective_capacity_cushion_block, real_capacity_totals_block, effective_capacity_changes_totals_block,
-               treasury_block,interrupt_block,
+               treasury_block, interrupt_block,
                price_history_block, protocol_block]
 
-psub_blocks_noRBS =  [meta_block, treasury_stables_block, liq_backing_block, reward_rate_block, bond_creation_block, bond_sell_block, bond_expiration_block, 
-                supply_block, reserves_in_block, amm_k_block,demand_block,treasury_block,interrupt_block, price_history_block, protocol_block]
+psub_blocks_noRBS = [meta_block, treasury_stables_block, liq_backing_block, reward_rate_block, bond_creation_block, bond_sell_block, bond_expiration_block,
+                     supply_block, reserves_in_block, amm_k_block, demand_block, treasury_block, interrupt_block, price_history_block, protocol_block]
 psub_blocks_soros = psub_blocks[:]
 
 psub_blocks_soros.insert(psub_blocks_soros.index(
     demand_block) + 1, soros_whale_block)
+
+psub_blocks_soros.insert(psub_blocks_soros.index(
+    soros_whale_block) + 1, soros_whale_reaction_block)
+
 
 psub_blocks_soros.append(soros_revenue_block)

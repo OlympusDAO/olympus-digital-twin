@@ -38,3 +38,12 @@ def p_soros_revenue(_params, substep, state_history, state) -> dict:
 
 def s_soros_revenue(_params, substep, state_history, state, _input) -> tuple:
     return ("soros_revenue", _input["soros_revenue"])
+
+
+def p_soros_whale_reaction(_params, substep, state_history, state) -> dict:
+    return {"whale_reaction": 0}
+
+
+def s_soros_whale_reaction(_params, substep, state_history, state, _input) -> tuple:
+    print(_input["whale_reaction"])
+    return ("net_flow", state["net_flow"] + _input["whale_reaction"])
