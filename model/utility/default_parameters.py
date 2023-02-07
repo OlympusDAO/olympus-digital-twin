@@ -65,4 +65,5 @@ default_params_soros = {"demand_factor": [.03],
                         "soros_short_timing": [None, 50],
                         "soros_close_out_timing": [55, 55],
                         "soros_long_position": [200000, 200000],
+                        "soros_whale_reaction_intensity": [1, 1]
                         }

@@ -46,7 +46,7 @@ def p_soros_whale_reaction(_params, substep, state_history, state) -> dict:
     else:
         last_whale_flow = 0
 
-    reaction_intensity = 1
+    reaction_intensity = _params["soros_whale_reaction_intensity"]
 
     whale_reaction = reaction_intensity * last_whale_flow
 
@@ -54,6 +54,5 @@ def p_soros_whale_reaction(_params, substep, state_history, state) -> dict:
 
 
 def s_soros_whale_reaction(_params, substep, state_history, state, _input) -> tuple:
-    if _input["whale_reaction"] > 0:
-        print(_input["whale_reaction"])
+
     return ("net_flow", state["net_flow"] + _input["whale_reaction"])
