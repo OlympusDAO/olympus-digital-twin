@@ -19,8 +19,6 @@ from .psub_functions.ohmbond import p_bond_create, s_bond_create, s_bond_created
 from .mechanism.supply import s_supply
 from .mechanism.treasury import s_treasury_stables, s_liq_backing, s_reserves_in
 from .policy.treasury import p_reserves_in
-from .mechanism.rbs_price import s_ma_target, s_lb_target, s_price_history, s_price_target, s_upper_target_wall, s_lower_target_wall, s_lower_target_cushion, s_upper_target_cushion, s_bid_counter, s_ask_counter
-from .policy.rbs_price import p_price_target, p_target_walls, p_target_cushions, p_bid_counter, p_ask_counter
 from .policy.utility import p_list_params
 from .psub_functions.utility import s_list_params, s_interrupt
 from .psub_functions.soros import p_soros_whale, s_soros_whale, s_soros_whale_flow, p_soros_revenue, s_soros_revenue, p_soros_whale_reaction, s_soros_whale_reaction
@@ -34,6 +32,8 @@ meta_block = {'policies': {
         'bond_annual_discount_rate': s_list_params("bond_annual_discount_rate"),
         'ohm_bond_to_netflow_ratio': s_list_params("ohm_bond_to_netflow_ratio"),
         'bond_schedule_name': s_list_params("bond_schedule_name"),
+        'panic_sell_on':s_list_params("panic_sell_on"),
+        'panic_param':s_list_params("panic_param")
 }}
 
 reward_rate_block = {'policies': {

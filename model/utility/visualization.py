@@ -13,11 +13,13 @@ def plot_all_sims(var_list: List[str], df: DataFrame):
         plt.show()
 
 
-def plot_grouped_variables_average(var_list: List[str], grouping_variables: List[str], df: DataFrame):
+def plot_grouped_variables_average(var_list: List[str], grouping_variables: List[str], df: DataFrame,legend_loc=''):
     data = df.groupby(grouping_variables + ["timestep"])[var_list].mean()
     for col in var_list:
         data[col].unstack(-1).T.plot(kind='line')
         plt.title(col)
+        if len(legend_loc)>0:
+            plt.legend(loc=legend_loc)
         plt.show()
     return plt.figure
 

@@ -35,14 +35,15 @@ def treasury_liquidity_policy(liq_stables_prior, net_flow, net_flow_bondsale, ne
     # ensure that if liq_ohm is 0 then price is 0 as well
     price = liq_ohm and liq_stables / liq_ohm or 0
 
+    #print(f'liq:{liq_stables}'+f'liq delta:{liq_stables-liq_stables_prior}  bid_change:{bid_change_usd} ask_change+reserves_in:{ask_change_usd + reserves_in}')
     return liq_stables, liq_ohm, price
 
 
 def treasury_reserves_policy(liq_stables, liq_stables_prior, net_flow, net_flow_bondsale, net_flow_bondexpire, reserves_stables_prior,
                              price, price_prior, cum_ohm_purchased_prior, cum_ohm_burnt_prior, cum_ohm_minted_prior, bid_change_ohm, ask_change_ohm):
     reserves_out = liq_stables - liq_stables_prior - \
-        (net_flow + net_flow_bondsale + net_flow_bondexpire)
-    reserves_stables = max(reserves_stables_prior - reserves_out, 0)
+        (net_flow + net_flow_bondsale + net_flow_bondexpire) # reserves_out = bid_change_usd - ask_change_usd - reserves_in
+    reserves_stables = reserves_stables_prior - reserves_out # allowing reserve stables to be negative, which will terminate the simulation
 
     ohm_traded = (price + price_prior) and (-2) * \
         reserves_out / (price + price_prior) or 0
