@@ -5,6 +5,28 @@
 
 This repository holds the cadCAD model created by BlockScience for Olympus DAO. It can be used to test a wide variety of simulations and scenarios. 
 
+## Repository Tree
+
+.
+├── README.md
+├── Single Example.ipynb - Example of a simple single run
+├── Sweep Example.ipynb - Example of a parameter sweep run
+├── legacy - Folder with legacy notebooks no longer used
+├── model
+│   ├── behavioral - Folder holding the behavioral functions of the system
+│   ├── classes - Folder for the classes used
+│   ├── mechanism - Folder for the mechanism functions (state updates)
+│   ├── policy - Folder for the policies used in the model
+│   ├── psub.py - Python file that creates the partial state update blocks
+│   ├── psub_functions - Folder holding the functionalities for PSUBs
+│   ├── run.py - Python file for code involved in running the model
+│   ├── signals - Folder of functions for creating random signals (i.e. a pattern of bond disbursements)
+│   ├── types - Folder holding the types utilized in the system
+│   └── utility - Folder with utility functions for ease of use modifications
+├── requirements.txt - Python packages required
+└── research - Folder for all research notebooks/analysis
+    └── 20230210 Exploratory Research - First cadCAD based model research notebooks
+
 ## What is cadCAD
 ## Installing cadCAD for running this repo
 
