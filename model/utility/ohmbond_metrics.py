@@ -5,7 +5,7 @@ import pandas as pd
     
 
 
-def plot_relative_kpi(kpi,kpidf,descriptors,group_vars = []):
+def plot_relative_kpi(kpi,kpidf,descriptors,group_vars = [],log_y=False):
     reference_val = kpidf.loc[kpidf['front_load_amount']==0][kpi].mean() # front_load_amount == 0 means there's no bond
     comparative_vals = kpidf.loc[kpidf['front_load_amount']!=0][kpi]-reference_val
     comparative_vals = pd.concat([comparative_vals,descriptors.loc[descriptors['front_load_amount']!=0]],axis=1)
@@ -15,8 +15,9 @@ def plot_relative_kpi(kpi,kpidf,descriptors,group_vars = []):
 
     for group_par in group_vars:
         plotdf = comparative_vals.groupby(group_par).agg([np.mean,sem])
-        plotdf[kpi].plot(kind='bar',y='mean',yerr='sem',title=kpi + ' (relative to no bond)')
+        plotdf[kpi].plot(kind='bar',y='mean',yerr='sem',title=kpi + ' (relative to no bond)',logy=log_y)
     return 
+
 
 # ----below: another way to calculate price volatility we are not using any more ----
 def get_moving_standard_deviation_df(pdseries, windowlen = 30):
