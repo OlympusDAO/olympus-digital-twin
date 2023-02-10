@@ -7,6 +7,7 @@ This repository holds the cadCAD model created by BlockScience for Olympus DAO. 
 
 ## Repository Tree
 
+```
 .
 ├── README.md
 ├── Single Example.ipynb - Example of a simple single run
@@ -26,6 +27,7 @@ This repository holds the cadCAD model created by BlockScience for Olympus DAO. 
 ├── requirements.txt - Python packages required
 └── research - Folder for all research notebooks/analysis
     └── 20230210 Exploratory Research - First cadCAD based model research notebooks
+```
 
 ## What is cadCAD
 ## Installing cadCAD for running this repo
