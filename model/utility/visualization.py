@@ -1,9 +1,52 @@
 from typing import List
 from pandas import DataFrame
+import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from .ohmbond_metrics import get_price_standard_deviation
 
+def tree_regression_analysis(df,xnames:list,yname:str,tree_depth=2):
+    from sklearn.tree import DecisionTreeRegressor,plot_tree
+    # fit the tree
+    X = df[xnames]
+    y = df[yname]
+    tree = DecisionTreeRegressor(max_depth=tree_depth)
+    tree.fit(X, y)
+    # plot the tree
+    fig,ax = plt.subplots(figsize = (15,6))
+    plot_tree(tree,
+              rounded=True,
+              proportion=True,
+              fontsize=8,
+              feature_names=X.columns,
+              filled=True,ax=ax)
+    
+    ax.set_title(f'Decision tree, score: {tree.score(X, y) :.0%}. N: {len(X) :.2e}')
+              
+
+def randomforest_regression_analysis(df,xnames:list,yname:str):
+    from sklearn.ensemble import RandomForestRegressor
+    # fit model
+    X = df[xnames]
+    y = df[yname]
+    rf = RandomForestRegressor()
+    rf.fit(X, y)
+    importance = (pd.DataFrame(list(zip(X.columns, rf.feature_importances_)),
+                        columns=['features', 'importance'])
+            .sort_values(by='importance', ascending=False)
+            )
+    
+    # plot the feature importance
+    import seaborn as sns
+    fig,ax = plt.subplots(figsize = (15,6))
+
+    sns.barplot(data=importance,
+                    x=importance.features,
+                    y=importance.importance,
+                    ax=ax,
+                    label='small')
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation=45)
+    ax.set_title(f'Feature Importance')
 
 def plot_all_sims(var_list: List[str], df: DataFrame):
     for col in var_list:
