@@ -62,7 +62,6 @@ default_params_soros = {"demand_factor": [.03],
                         # should be between 0 and 1
                         "ohm_bond_to_netflow_ratio": [0.5],
                         # should be between 0 and 1. bigger it is, more drainage of liquidity it will allow
-                        "liq_stables_safety_ratio": [0.8],
                         "soros_short_amount": [0, 100000],
                         "soros_short_timing": [None, 50],
                         "soros_close_out_timing": [55, 55],
