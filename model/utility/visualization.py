@@ -55,16 +55,16 @@ def plot_all_sims(var_list: List[str], df: DataFrame):
         plt.legend([])
         plt.show()
 
-
-def plot_grouped_variables_average(var_list: List[str], grouping_variables: List[str], df: DataFrame,legend_loc=''):
+def plot_grouped_variables_average(var_list: List[str], grouping_variables: List[str], df: DataFrame,legend_loc='',colormap = 'tab10'):
     data = df.groupby(grouping_variables + ["timestep"])[var_list].mean()
     for col in var_list:
-        data[col].unstack(-1).T.plot(kind='line')
+        data[col].unstack(-1).T.plot(kind='line',colormap=colormap)
         plt.title(col)
         if len(legend_loc)>0:
             plt.legend(loc=legend_loc)
         plt.show()
     return plt.figure
+
 
 
 def plot_multivars_grouped_average(var_list: list[str], grouping_variables: list[str], df: DataFrame, linestyles: list = []):
