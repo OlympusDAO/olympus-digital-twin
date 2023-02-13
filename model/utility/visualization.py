@@ -60,8 +60,10 @@ def plot_grouped_variables_average(var_list: List[str], grouping_variables: List
     for col in var_list:
         data[col].unstack(-1).T.plot(kind='line',colormap=colormap)
         plt.title(col)
+        plt.legend(ncol = int(len(data['price'].unstack(-1).T.columns)/4))
         if len(legend_loc)>0:
-            plt.legend(loc=legend_loc)
+            plt.legend(loc=legend_loc,ncol = int(len(data['price'].unstack(-1).T.columns)/4))
+
         plt.show()
     return plt.figure
 
